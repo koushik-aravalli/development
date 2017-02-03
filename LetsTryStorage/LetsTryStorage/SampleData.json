@@ -1,0 +1,46 @@
+﻿[
+  /*
+  {
+    "PartitionKey": "VSAT",
+    "RowKey": "SID0001-RO1 Dummy1",
+    "propertyName": "Usage",
+    "lowerLimit": 100,
+    "upperLimit": 200
+  },
+  {
+    "PartitionKey": "VSAT",
+    "RowKey": "SID0002-RO1 Dummy2",
+    "propertyName": "Usage",
+    "lowerLimit": 150,
+    "upperLimit": 200
+  },
+  {
+    "PartitionKey": "VSAT",
+    "RowKey": "SID0003-RO1 Dummy3",
+    "propertyName": "Usage",
+    "lowerLimit": 500,
+    "upperLimit": 600
+  },
+  {
+    "PartitionKey": "VSAT",
+    "RowKey": "SID0004-RO1 Dummy4",
+    "propertyName": "Usage",
+    "lowerLimit": 100,
+    "upperLimit": 150
+  },
+  {
+    "PartitionKey": "VSAT",
+    "RowKey": "SID0005-RO1 Dummy5",
+    "propertyName": "Usage",
+    "lowerLimit": 100,
+    "upperLimit": 200
+  },
+  */
+  {
+    "PartitionKey": "VSAT",
+    "RowKey": "SID6994-RO1 Ocean Sapphire",
+    "propertyName": "Usage",
+    "lowerLimit": 100,
+    "upperLimit": 200
+  }
+]

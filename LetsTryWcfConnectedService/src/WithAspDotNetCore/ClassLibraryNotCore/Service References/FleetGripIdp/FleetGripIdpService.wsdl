@@ -1,0 +1,1842 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://vizada.com/businessmap/2.10.0.0/fleetgripidp" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:i0="http://tempuri.org/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="FleetGripIdpService" targetNamespace="http://vizada.com/businessmap/2.10.0.0/fleetgripidp" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="WSHttpBinding_IFleetGripIdp_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://vizada.com/businessmap/2.10.0.0/fleetgripidp" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schemas.datacontract.org/2004/07/BusinessMapAPI" />
+      <xs:element name="DeleteMessageQueue">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="messageQueueId" type="xs:int" />
+            <xs:element minOccurs="0" name="from" nillable="true" type="xs:dateTime" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DeleteMessageQueueResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/BusinessMapAPI" minOccurs="0" name="DeleteMessageQueueResult" nillable="true" type="q1:VoidResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAllMessageQueues">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="pageIndex" type="xs:int" />
+            <xs:element minOccurs="0" name="pageSize" type="xs:int" />
+            <xs:element minOccurs="0" name="orderMember" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="orderAscending" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAllMessageQueuesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/BusinessMapAPI" minOccurs="0" name="GetAllMessageQueuesResult" nillable="true" type="q2:MessageQueueResponseList" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetMessageQueueById">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="id" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetMessageQueueByIdResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/BusinessMapAPI" minOccurs="0" name="GetMessageQueueByIdResult" nillable="true" type="q3:MessageQueueResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="NewMessageQueue">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/BusinessMapAPI" minOccurs="0" name="request" nillable="true" type="q4:MessageQueueWritableDTO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="NewMessageQueueResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/BusinessMapAPI" minOccurs="0" name="NewMessageQueueResult" nillable="true" type="q5:MessageQueueResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DeleteGenericDataTerminal">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="dataTerminalId" type="xs:long" />
+            <xs:element minOccurs="0" name="from" nillable="true" type="xs:dateTime" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DeleteGenericDataTerminalResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/BusinessMapAPI" minOccurs="0" name="DeleteGenericDataTerminalResult" nillable="true" type="q6:VoidResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAllGenericDataTerminals">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="pageIndex" type="xs:int" />
+            <xs:element minOccurs="0" name="pageSize" type="xs:int" />
+            <xs:element minOccurs="0" name="orderMember" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="orderAscending" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAllGenericDataTerminalsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/BusinessMapAPI" minOccurs="0" name="GetAllGenericDataTerminalsResult" nillable="true" type="q7:GenericDataTerminalResponseList" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetGenericDataTerminalById">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="id" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetGenericDataTerminalByIdResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/BusinessMapAPI" minOccurs="0" name="GetGenericDataTerminalByIdResult" nillable="true" type="q8:GenericDataTerminalResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="NewGenericDataTerminal">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/BusinessMapAPI" minOccurs="0" name="request" nillable="true" type="q9:GenericDataTerminalWritableDTO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="NewGenericDataTerminalResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/BusinessMapAPI" minOccurs="0" name="NewGenericDataTerminalResult" nillable="true" type="q10:GenericDataTerminalResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="anyType" nillable="true" type="xs:anyType" />
+      <xs:element name="anyURI" nillable="true" type="xs:anyURI" />
+      <xs:element name="base64Binary" nillable="true" type="xs:base64Binary" />
+      <xs:element name="boolean" nillable="true" type="xs:boolean" />
+      <xs:element name="byte" nillable="true" type="xs:byte" />
+      <xs:element name="dateTime" nillable="true" type="xs:dateTime" />
+      <xs:element name="decimal" nillable="true" type="xs:decimal" />
+      <xs:element name="double" nillable="true" type="xs:double" />
+      <xs:element name="float" nillable="true" type="xs:float" />
+      <xs:element name="int" nillable="true" type="xs:int" />
+      <xs:element name="long" nillable="true" type="xs:long" />
+      <xs:element name="QName" nillable="true" type="xs:QName" />
+      <xs:element name="short" nillable="true" type="xs:short" />
+      <xs:element name="string" nillable="true" type="xs:string" />
+      <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte" />
+      <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt" />
+      <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong" />
+      <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort" />
+      <xs:element name="char" nillable="true" type="tns:char" />
+      <xs:simpleType name="char">
+        <xs:restriction base="xs:int" />
+      </xs:simpleType>
+      <xs:element name="duration" nillable="true" type="tns:duration" />
+      <xs:simpleType name="duration">
+        <xs:restriction base="xs:duration">
+          <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?" />
+          <xs:minInclusive value="-P10675199DT2H48M5.4775808S" />
+          <xs:maxInclusive value="P10675199DT2H48M5.4775807S" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="guid" nillable="true" type="tns:guid" />
+      <xs:simpleType name="guid">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:attribute name="FactoryType" type="xs:QName" />
+      <xs:attribute name="Id" type="xs:ID" />
+      <xs:attribute name="Ref" type="xs:IDREF" />
+    </xs:schema>
+    <xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/BusinessMapAPI" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BusinessMapAPI" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xs:complexType name="VoidResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ElapsedMilliseconds" type="xs:long" />
+          <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ErrorNumber" type="xs:int" />
+          <xs:element minOccurs="0" name="IsFunctionalError" type="xs:boolean" />
+          <xs:element minOccurs="0" name="IsUsingNeo4J" type="xs:boolean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="VoidResponse" nillable="true" type="tns:VoidResponse" />
+      <xs:complexType name="MessageQueueResponseList">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleResponseListOfMessageQueueDTOklkoR5_SD">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="MessageQueueResponseList" nillable="true" type="tns:MessageQueueResponseList" />
+      <xs:complexType name="SimpleResponseListOfMessageQueueDTOklkoR5_SD">
+        <xs:annotation>
+          <xs:appinfo>
+            <GenericType Name="SimpleResponseListOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/BusinessMapAPI" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+              <GenericParameter Name="MessageQueueDTO" Namespace="http://schemas.datacontract.org/2004/07/BusinessMapAPI" />
+            </GenericType>
+          </xs:appinfo>
+        </xs:annotation>
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:VoidResponse">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="CountTotal" type="xs:int" />
+              <xs:element minOccurs="0" name="Details" nillable="true" type="tns:ArrayOfMessageQueueDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="SimpleResponseListOfMessageQueueDTOklkoR5_SD" nillable="true" type="tns:SimpleResponseListOfMessageQueueDTOklkoR5_SD" />
+      <xs:complexType name="ArrayOfMessageQueueDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="MessageQueueDTO" nillable="true" type="tns:MessageQueueDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfMessageQueueDTO" nillable="true" type="tns:ArrayOfMessageQueueDTO" />
+      <xs:complexType name="MessageQueueDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:MessageQueueWritableDTO">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="MessageQueueDTO" nillable="true" type="tns:MessageQueueDTO" />
+      <xs:complexType name="MessageQueueWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Configuration" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="QueueID" type="xs:int" />
+              <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="MessageQueueWritableDTO" nillable="true" type="tns:MessageQueueWritableDTO" />
+      <xs:complexType name="SimpleObjectDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Id" type="xs:int" />
+          <xs:element minOccurs="0" name="LockId" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="SimpleObjectDTO" nillable="true" type="tns:SimpleObjectDTO" />
+      <xs:complexType name="MessageQueueResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleResponseOfMessageQueueDTOklkoR5_SD">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="MessageQueueResponse" nillable="true" type="tns:MessageQueueResponse" />
+      <xs:complexType name="SimpleResponseOfMessageQueueDTOklkoR5_SD">
+        <xs:annotation>
+          <xs:appinfo>
+            <GenericType Name="SimpleResponseOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/BusinessMapAPI" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+              <GenericParameter Name="MessageQueueDTO" Namespace="http://schemas.datacontract.org/2004/07/BusinessMapAPI" />
+            </GenericType>
+          </xs:appinfo>
+        </xs:annotation>
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:VoidResponse">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Detail" nillable="true" type="tns:MessageQueueDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="SimpleResponseOfMessageQueueDTOklkoR5_SD" nillable="true" type="tns:SimpleResponseOfMessageQueueDTOklkoR5_SD" />
+      <xs:complexType name="GenericDataTerminalResponseList">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ResponseListOfGenericDataTerminalDTOklkoR5_SD">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericDataTerminalResponseList" nillable="true" type="tns:GenericDataTerminalResponseList" />
+      <xs:complexType name="ResponseListOfGenericDataTerminalDTOklkoR5_SD">
+        <xs:annotation>
+          <xs:appinfo>
+            <GenericType Name="ResponseListOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/BusinessMapAPI" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+              <GenericParameter Name="GenericDataTerminalDTO" Namespace="http://schemas.datacontract.org/2004/07/BusinessMapAPI" />
+            </GenericType>
+          </xs:appinfo>
+        </xs:annotation>
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:VoidResponse">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="CountTotal" type="xs:int" />
+              <xs:element minOccurs="0" name="Details" nillable="true" type="tns:ArrayOfGenericDataTerminalDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ResponseListOfGenericDataTerminalDTOklkoR5_SD" nillable="true" type="tns:ResponseListOfGenericDataTerminalDTOklkoR5_SD" />
+      <xs:complexType name="ArrayOfGenericDataTerminalDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="GenericDataTerminalDTO" nillable="true" type="tns:GenericDataTerminalDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfGenericDataTerminalDTO" nillable="true" type="tns:ArrayOfGenericDataTerminalDTO" />
+      <xs:complexType name="GenericDataTerminalDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericDataTerminalWritableDTO">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericDataTerminalDTO" nillable="true" type="tns:GenericDataTerminalDTO" />
+      <xs:complexType name="GenericDataTerminalWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericServiceObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Queue" nillable="true" type="tns:MessageQueueDTO" />
+              <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericDataTerminalWritableDTO" nillable="true" type="tns:GenericDataTerminalWritableDTO" />
+      <xs:complexType name="GenericServiceObjectDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:DetailDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ServiceObjectType" type="tns:ServiceObjectType" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericServiceObjectDTO" nillable="true" type="tns:GenericServiceObjectDTO" />
+      <xs:complexType name="DetailDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CustomerReference" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EndDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ExternalReferences" nillable="true" type="tns:ArrayOfExternalReferenceDTO" />
+          <xs:element minOccurs="0" name="GeneralName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="HistoryId" type="xs:long" />
+          <xs:element minOccurs="0" name="Id" type="xs:long" />
+          <xs:element minOccurs="0" name="LockId" type="xs:long" />
+          <xs:element minOccurs="0" name="StartDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="TopicDescription" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TopicTypeName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="DetailDTO" nillable="true" type="tns:DetailDTO" />
+      <xs:complexType name="ArrayOfExternalReferenceDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ExternalReferenceDTO" nillable="true" type="tns:ExternalReferenceDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfExternalReferenceDTO" nillable="true" type="tns:ArrayOfExternalReferenceDTO" />
+      <xs:complexType name="ExternalReferenceDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ExternalReferenceWritableDTO">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ExternalReferenceDTO" nillable="true" type="tns:ExternalReferenceDTO" />
+      <xs:complexType name="ExternalReferenceWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:DetailDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ExternalID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ExternalName" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ExternalSystem" nillable="true" type="tns:ExternalSystemDTO" />
+              <xs:element minOccurs="0" name="ExternalType" nillable="true" type="tns:ExternalTypeDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ExternalReferenceWritableDTO" nillable="true" type="tns:ExternalReferenceWritableDTO" />
+      <xs:complexType name="ExternalSystemDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ExternalSystemDTO" nillable="true" type="tns:ExternalSystemDTO" />
+      <xs:complexType name="ExternalTypeDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ExternalTypeDTO" nillable="true" type="tns:ExternalTypeDTO" />
+      <xs:simpleType name="ServiceObjectType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="GenericSimcard">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">241000</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="GenericSkyFileAccount">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">242000</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="GenericOnBoardPortal">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">243000</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="GenericXChangeBox">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">244000</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="GenericExtension">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">245000</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="GenericUniversalCard">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">246000</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="GenericModem">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">250000</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="GenericTelemedDevice">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">256000</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="GenericDataTerminal">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">258000</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="ServiceObjectType" nillable="true" type="tns:ServiceObjectType" />
+      <xs:complexType name="GenericModemDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericModemWritableDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Installation" nillable="true" type="tns:InstallationLightweightDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericModemDTO" nillable="true" type="tns:GenericModemDTO" />
+      <xs:complexType name="GenericModemWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericServiceObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Status" nillable="true" type="tns:ComDeviceStatusDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericModemWritableDTO" nillable="true" type="tns:GenericModemWritableDTO" />
+      <xs:complexType name="ComDeviceStatusDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ComDeviceStatusDTO" nillable="true" type="tns:ComDeviceStatusDTO" />
+      <xs:complexType name="GenericSimcardDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericSimcardWritableDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="FeatureOptions" nillable="true" type="tns:ArrayOfServiceFeatureDTO" />
+              <xs:element minOccurs="0" name="InitialUnits" nillable="true" type="xs:decimal" />
+              <xs:element minOccurs="0" name="Site" nillable="true" type="tns:SiteLightweightDTO" />
+              <xs:element minOccurs="0" name="UnitsExpiration" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="UnitsLeft" nillable="true" type="xs:decimal" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericSimcardDTO" nillable="true" type="tns:GenericSimcardDTO" />
+      <xs:complexType name="GenericSimcardWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericServiceObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ComDeviceClass" nillable="true" type="tns:ComDeviceClassDTO" />
+              <xs:element minOccurs="0" name="ComDeviceStatus" nillable="true" type="tns:ComDeviceStatusDTO" />
+              <xs:element minOccurs="0" name="ComDeviceStatusReason" nillable="true" type="tns:ComDeviceStatusReasonDTO" />
+              <xs:element minOccurs="0" name="ICCID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="IMSI" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Language" nillable="true" type="tns:LanguageDTO" />
+              <xs:element minOccurs="0" name="MSISDNs" nillable="true" type="tns:ArrayOfMsisdnDTO" />
+              <xs:element minOccurs="0" name="PIN1" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PIN2" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PUK1" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PUK2" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Technology" nillable="true" type="tns:TechnologyDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericSimcardWritableDTO" nillable="true" type="tns:GenericSimcardWritableDTO" />
+      <xs:complexType name="ComDeviceClassDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="DefaultComdeviceStatus" nillable="true" type="tns:ComDeviceStatusDTO" />
+              <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="DescriptionExtra" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Product" nillable="true" type="tns:ProductDTO" />
+              <xs:element minOccurs="0" name="RequiredSubsPrepaid" type="xs:boolean" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ComDeviceClassDTO" nillable="true" type="tns:ComDeviceClassDTO" />
+      <xs:complexType name="ProductDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ProductHint" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Technology" nillable="true" type="tns:TechnologyDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ProductDTO" nillable="true" type="tns:ProductDTO" />
+      <xs:complexType name="TechnologyDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Provider" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="TechnologyDTO" nillable="true" type="tns:TechnologyDTO" />
+      <xs:complexType name="ComDeviceStatusReasonDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ComDeviceStatusRemoveable" nillable="true" type="tns:ComDeviceStatusRemoveableDTO" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Reason" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ComDeviceStatusReasonDTO" nillable="true" type="tns:ComDeviceStatusReasonDTO" />
+      <xs:complexType name="ComDeviceStatusRemoveableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Explaination" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ComDeviceStatusRemoveableDTO" nillable="true" type="tns:ComDeviceStatusRemoveableDTO" />
+      <xs:complexType name="LanguageDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="DefaultLanguage" type="xs:boolean" />
+              <xs:element minOccurs="0" name="LanguageName" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="LanguageDTO" nillable="true" type="tns:LanguageDTO" />
+      <xs:complexType name="ArrayOfMsisdnDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="MsisdnDTO" nillable="true" type="tns:MsisdnDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfMsisdnDTO" nillable="true" type="tns:ArrayOfMsisdnDTO" />
+      <xs:complexType name="MsisdnDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:MsisdnWritableDTO">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="MsisdnDTO" nillable="true" type="tns:MsisdnDTO" />
+      <xs:complexType name="MsisdnWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:DetailDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Msisdn" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PlusOne" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="SecurityPin" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ServiceType" nillable="true" type="tns:ServiceTypeDTO" />
+              <xs:element minOccurs="0" name="Status" nillable="true" type="tns:ComDeviceStatusDTO" />
+              <xs:element minOccurs="0" name="StatusDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="Technology" nillable="true" type="tns:TechnologyDTO" />
+              <xs:element minOccurs="0" name="TwoStagePin" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="VoiceMail" type="xs:boolean" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="MsisdnWritableDTO" nillable="true" type="tns:MsisdnWritableDTO" />
+      <xs:complexType name="ServiceTypeDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="IsRateService" type="xs:boolean" />
+              <xs:element minOccurs="0" name="IsTrafficService" type="xs:boolean" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="NeedsSettingRateRelation" type="xs:boolean" />
+              <xs:element minOccurs="0" name="RoutingType" nillable="true" type="tns:RoutingTypeDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ServiceTypeDTO" nillable="true" type="tns:ServiceTypeDTO" />
+      <xs:complexType name="RoutingTypeDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="RoutingTypeDTO" nillable="true" type="tns:RoutingTypeDTO" />
+      <xs:complexType name="GenericSkyFileAccountDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericSkyFileAccountWritableDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Simcard" nillable="true" type="tns:SimcardDTO" />
+              <xs:element minOccurs="0" name="Vessel" nillable="true" type="tns:VesselDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericSkyFileAccountDTO" nillable="true" type="tns:GenericSkyFileAccountDTO" />
+      <xs:complexType name="GenericSkyFileAccountWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericServiceObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="AtSeaMailAddress" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ComDeviceStatus" nillable="true" type="tns:ComDeviceStatusDTO" />
+              <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericSkyFileAccountWritableDTO" nillable="true" type="tns:GenericSkyFileAccountWritableDTO" />
+      <xs:complexType name="GenericOnBoardPortalDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericOnBoardPortalWritableDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Simcard" nillable="true" type="tns:SimcardDTO" />
+              <xs:element minOccurs="0" name="Vessel" nillable="true" type="tns:VesselDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericOnBoardPortalDTO" nillable="true" type="tns:GenericOnBoardPortalDTO" />
+      <xs:complexType name="GenericOnBoardPortalWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericServiceObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ComDeviceStatus" nillable="true" type="tns:ComDeviceStatusDTO" />
+              <xs:element minOccurs="0" name="CreatedOn" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="InitiallyActivatedWith" nillable="true" type="tns:PackageDTO" />
+              <xs:element minOccurs="0" name="LocalAdminPassword" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="LocalAdminUsername" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="OBPID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="OBPKey" nillable="true" type="ser:guid" />
+              <xs:element minOccurs="0" name="SkyfileUsername" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericOnBoardPortalWritableDTO" nillable="true" type="tns:GenericOnBoardPortalWritableDTO" />
+      <xs:complexType name="PackageDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Allowances" nillable="true" type="tns:ArrayOfAllowanceDTO" />
+              <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Product" nillable="true" type="tns:ProductDTO" />
+              <xs:element minOccurs="0" name="SubscriptionType" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PackageDTO" nillable="true" type="tns:PackageDTO" />
+      <xs:complexType name="ArrayOfAllowanceDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="AllowanceDTO" nillable="true" type="tns:AllowanceDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfAllowanceDTO" nillable="true" type="tns:ArrayOfAllowanceDTO" />
+      <xs:complexType name="AllowanceDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Currency" nillable="true" type="tns:CurrencyDTO" />
+              <xs:element minOccurs="0" name="DefaultValue" nillable="true" type="xs:decimal" />
+              <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PerUnit" nillable="true" type="tns:UnitDTO" />
+              <xs:element minOccurs="0" name="Unit" nillable="true" type="tns:UnitDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="AllowanceDTO" nillable="true" type="tns:AllowanceDTO" />
+      <xs:complexType name="CurrencyDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CurrencySign" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Hidden" type="xs:boolean" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="CurrencyDTO" nillable="true" type="tns:CurrencyDTO" />
+      <xs:complexType name="UnitDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="UnitType" nillable="true" type="tns:UnitTypeDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="UnitDTO" nillable="true" type="tns:UnitDTO" />
+      <xs:complexType name="UnitTypeDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PreferredDisplayUnitId" type="xs:int" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="UnitTypeDTO" nillable="true" type="tns:UnitTypeDTO" />
+      <xs:complexType name="GenericXChangeBoxDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericXChangeBoxWritableDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="BoxGroupsFrom" nillable="true" type="tns:ArrayOfBoxGroupDTO" />
+              <xs:element minOccurs="0" name="CDSPackages" nillable="true" type="tns:ArrayOfCDSPackageDTO" />
+              <xs:element minOccurs="0" name="VesselsFrom" nillable="true" type="tns:ArrayOfVesselLightweightDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericXChangeBoxDTO" nillable="true" type="tns:GenericXChangeBoxDTO" />
+      <xs:complexType name="GenericXChangeBoxWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericServiceObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ActivationDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="BoxSerialNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="BoxType" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="FirmwareVersion" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="HardwareID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Owner" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ProductionDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericXChangeBoxWritableDTO" nillable="true" type="tns:GenericXChangeBoxWritableDTO" />
+      <xs:complexType name="GenericExtensionDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericExtensionWritableDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Site" nillable="true" type="tns:SiteDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericExtensionDTO" nillable="true" type="tns:GenericExtensionDTO" />
+      <xs:complexType name="GenericExtensionWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericServiceObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ExtensionNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="OffNetNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="OnNetNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Title" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericExtensionWritableDTO" nillable="true" type="tns:GenericExtensionWritableDTO" />
+      <xs:complexType name="GenericUniversalCardDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericUniversalCardWritableDTO">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericUniversalCardDTO" nillable="true" type="tns:GenericUniversalCardDTO" />
+      <xs:complexType name="GenericUniversalCardWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericServiceObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ActivationDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="ComDeviceClass" nillable="true" type="tns:ComDeviceClassDTO" />
+              <xs:element minOccurs="0" name="ComDeviceStatus" nillable="true" type="tns:ComDeviceStatusDTO" />
+              <xs:element minOccurs="0" name="CreationDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="ExpiryDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="FirstUsageDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="InitialCredit" type="xs:decimal" />
+              <xs:element minOccurs="0" name="Language" nillable="true" type="tns:LanguageDTO" />
+              <xs:element minOccurs="0" name="LastReloadDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="OrderId" type="xs:int" />
+              <xs:element minOccurs="0" name="OrderingDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="Package" nillable="true" type="tns:PackageDTO" />
+              <xs:element minOccurs="0" name="Pin9" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ProcessingDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="RemainingCredit" type="xs:decimal" />
+              <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="SerialNumberWTL" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TechnicalStatusModifiedDate" nillable="true" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericUniversalCardWritableDTO" nillable="true" type="tns:GenericUniversalCardWritableDTO" />
+      <xs:complexType name="GenericTelemedDeviceDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericTelemedDeviceWritableDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Site" nillable="true" type="tns:SiteLightweightDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericTelemedDeviceDTO" nillable="true" type="tns:GenericTelemedDeviceDTO" />
+      <xs:complexType name="GenericTelemedDeviceWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:GenericServiceObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ActivationDate" type="xs:dateTime" />
+              <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="DeployedMedicalDevices" nillable="true" type="q1:ArrayOfstring" />
+              <xs:element minOccurs="0" name="DeviceStatus" nillable="true" type="tns:TelemedDeviceStatusDTO" />
+              <xs:element minOccurs="0" name="FirmwareDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="FirmwareVersion" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="LastStatusChange" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="MaxAllowedBandwidth" type="xs:long" />
+              <xs:element minOccurs="0" name="MedicalAssistanceCenter" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="NextRecalibrationDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="SubscriptionID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="SubscriptionStatus" type="xs:int" />
+              <xs:element minOccurs="0" name="Type" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericTelemedDeviceWritableDTO" nillable="true" type="tns:GenericTelemedDeviceWritableDTO" />
+      <xs:complexType name="TelemedDeviceStatusDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="TelemedDeviceStatusDTO" nillable="true" type="tns:TelemedDeviceStatusDTO" />
+      <xs:complexType name="SiteLightweightDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ExternalReferences" nillable="true" type="tns:ArrayOfExternalReferenceDTO" />
+              <xs:element minOccurs="0" name="SiteType" type="tns:SiteType" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="SiteLightweightDTO" nillable="true" type="tns:SiteLightweightDTO" />
+      <xs:simpleType name="SiteType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Vessel" />
+          <xs:enumeration value="StaticSite" />
+          <xs:enumeration value="Aircraft" />
+          <xs:enumeration value="SiteTrackingObject" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="SiteType" nillable="true" type="tns:SiteType" />
+      <xs:complexType name="AircraftLightweightDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SiteLightweightDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="AESID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="AircraftClass" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Antenna" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CountryOfRegistryId" type="xs:int" />
+              <xs:element minOccurs="0" name="ICAO" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Manufacturer" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TailNumber" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="AircraftLightweightDTO" nillable="true" type="tns:AircraftLightweightDTO" />
+      <xs:complexType name="StaticSiteLightweightDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SiteLightweightDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="City" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Country" nillable="true" type="tns:LocationDTO" />
+              <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Global" nillable="true" type="xs:boolean" />
+              <xs:element minOccurs="0" name="Latitude" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Longitude" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="SiteCode" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Zip" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="StaticSiteLightweightDTO" nillable="true" type="tns:StaticSiteLightweightDTO" />
+      <xs:complexType name="LocationDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="LocationDTO" nillable="true" type="tns:LocationDTO" />
+      <xs:complexType name="VesselLightweightDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SiteLightweightDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="CallSign" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="LrImoShipNo" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="MMSI" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="VesselType" nillable="true" type="tns:VesselTypeDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="VesselLightweightDTO" nillable="true" type="tns:VesselLightweightDTO" />
+      <xs:complexType name="VesselTypeDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Level5" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Level5Decode" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="VesselTypeDTO" nillable="true" type="tns:VesselTypeDTO" />
+      <xs:complexType name="SiteTrackingObjectLightWeightDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SiteLightweightDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="DeviceUniqueID" type="xs:long" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="SiteTrackingObjectLightWeightDTO" nillable="true" type="tns:SiteTrackingObjectLightWeightDTO" />
+      <xs:complexType name="SiteDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:DetailDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="IsPrivate" type="xs:boolean" />
+              <xs:element minOccurs="0" name="SiteType" type="tns:SiteType" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="SiteDTO" nillable="true" type="tns:SiteDTO" />
+      <xs:complexType name="AircraftDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:AircraftWritableDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ContainingInstallations" nillable="true" type="tns:ArrayOfInstallationDTO" />
+              <xs:element minOccurs="0" name="ContainingSiteGroups" nillable="true" type="tns:ArrayOfSiteGroupLightweightDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="AircraftDTO" nillable="true" type="tns:AircraftDTO" />
+      <xs:complexType name="AircraftWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SiteDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="AESID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="AircraftClass" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Antenna" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CountryOfRegistryId" type="xs:int" />
+              <xs:element minOccurs="0" name="ICAO" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Manufacturer" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TailNumber" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="AircraftWritableDTO" nillable="true" type="tns:AircraftWritableDTO" />
+      <xs:complexType name="StaticSiteDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:StaticSiteWritableDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ContainingInstallations" nillable="true" type="tns:ArrayOfInstallationDTO" />
+              <xs:element minOccurs="0" name="ContainingSiteGroups" nillable="true" type="tns:ArrayOfSiteGroupLightweightDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="StaticSiteDTO" nillable="true" type="tns:StaticSiteDTO" />
+      <xs:complexType name="StaticSiteWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SiteDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="City" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Country" nillable="true" type="tns:LocationDTO" />
+              <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Global" nillable="true" type="xs:boolean" />
+              <xs:element minOccurs="0" name="Latitude" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Longitude" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="SiteCode" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Zip" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="StaticSiteWritableDTO" nillable="true" type="tns:StaticSiteWritableDTO" />
+      <xs:complexType name="VesselDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:VesselWritableDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ContainingFleets" nillable="true" type="tns:ArrayOfSiteGroupLightweightDTO" />
+              <xs:element minOccurs="0" name="ContainingInstallations" nillable="true" type="tns:ArrayOfInstallationDTO" />
+              <xs:element minOccurs="0" name="ContainingSkyFileAccounts" nillable="true" type="tns:ArrayOfSkyFileAccountLightweightDTO" />
+              <xs:element minOccurs="0" name="ContainingVizadaBoxes" nillable="true" type="tns:ArrayOfVizadaBoxLightweightDTO" />
+              <xs:element minOccurs="0" name="SkyFileCount" type="xs:int" />
+              <xs:element minOccurs="0" name="VizadaBoxCount" type="xs:int" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="VesselDTO" nillable="true" type="tns:VesselDTO" />
+      <xs:complexType name="VesselWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SiteDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="CallSign" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="FishingNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Flag" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="GrossTonnage" type="xs:long" />
+              <xs:element minOccurs="0" name="LrImoShipNo" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="MMSI" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Manager" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ManagerCode" type="xs:long" />
+              <xs:element minOccurs="0" name="ManagerContactPerson" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ManagerCountryOfDomicileName" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ManagerEmail" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ManagerPhoneNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Owner" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="OwnerCode" type="xs:long" />
+              <xs:element minOccurs="0" name="OwnerContactPerson" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="OwnerCountryOfDomicile" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="OwnerEmail" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="OwnerPhoneNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PortOfRegistry" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="VesselType" nillable="true" type="tns:VesselTypeDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="VesselWritableDTO" nillable="true" type="tns:VesselWritableDTO" />
+      <xs:complexType name="SiteTrackingObjectDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SiteTrackingObjectWritableDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Customer" nillable="true" type="tns:CompanyDTO" />
+              <xs:element minOccurs="0" name="Simcard" nillable="true" type="tns:SimcardDTO" />
+              <xs:element minOccurs="0" name="SiteGroups" nillable="true" type="tns:ArrayOfSiteGroupLightweightDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="SiteTrackingObjectDTO" nillable="true" type="tns:SiteTrackingObjectDTO" />
+      <xs:complexType name="SiteTrackingObjectWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SiteDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="DataTrackDeviceID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="DeviceUniqueID" type="xs:long" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="SiteTrackingObjectWritableDTO" nillable="true" type="tns:SiteTrackingObjectWritableDTO" />
+      <xs:complexType name="CompanyDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:CompanyWritableDTO">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="CompanyDTO" nillable="true" type="tns:CompanyDTO" />
+      <xs:complexType name="CompanyWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:DetailDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Attn" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="City" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Context" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CrmId" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Currency" nillable="true" type="tns:CurrencyDTO" />
+              <xs:element minOccurs="0" name="DB_ID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="DUNSBranchNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="DUNSBusinessName" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="DUNSNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="DUNSStatus" nillable="true" type="tns:DUNSStatusDTO" />
+              <xs:element minOccurs="0" name="EmailAddress" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ExchPremium" nillable="true" type="xs:decimal" />
+              <xs:element minOccurs="0" name="FlagDirectSales" nillable="true" type="xs:boolean" />
+              <xs:element minOccurs="0" name="FullName" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Language" nillable="true" type="tns:LanguageDTO" />
+              <xs:element minOccurs="0" name="Location" nillable="true" type="tns:LocationDTO" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PhoneNrFax" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PhoneNrHome" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PhoneNrMobile" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PhoneNrWork" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Salute" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="State" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Street1" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Street2" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Street3" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="VatNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="VatTariff" nillable="true" type="tns:VatTariffDTO" />
+              <xs:element minOccurs="0" name="WebAddress" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ZipCode" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="CompanyWritableDTO" nillable="true" type="tns:CompanyWritableDTO" />
+      <xs:complexType name="DUNSStatusDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="DUNSStatusDTO" nillable="true" type="tns:DUNSStatusDTO" />
+      <xs:complexType name="VatTariffDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="InvoiceText" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="VatPercentage" type="xs:decimal" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="VatTariffDTO" nillable="true" type="tns:VatTariffDTO" />
+      <xs:complexType name="SimcardDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimcardWritableDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="FeatureOptions" nillable="true" type="tns:ArrayOfServiceFeatureDTO" />
+              <xs:element minOccurs="0" name="InitialUnits" nillable="true" type="xs:decimal" />
+              <xs:element minOccurs="0" name="Site" nillable="true" type="tns:SiteLightweightDTO" />
+              <xs:element minOccurs="0" name="UnitsExpiration" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="UnitsLeft" nillable="true" type="xs:decimal" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="SimcardDTO" nillable="true" type="tns:SimcardDTO" />
+      <xs:complexType name="SimcardWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:DetailDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ComDeviceClass" nillable="true" type="tns:ComDeviceClassDTO" />
+              <xs:element minOccurs="0" name="ComDeviceStatus" nillable="true" type="tns:ComDeviceStatusDTO" />
+              <xs:element minOccurs="0" name="ComDeviceStatusReason" nillable="true" type="tns:ComDeviceStatusReasonDTO" />
+              <xs:element minOccurs="0" name="ICCID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="IMSI" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Language" nillable="true" type="tns:LanguageDTO" />
+              <xs:element minOccurs="0" name="MSISDNs" nillable="true" type="tns:ArrayOfMsisdnDTO" />
+              <xs:element minOccurs="0" name="PIN1" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PIN2" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PUK1" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PUK2" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Technology" nillable="true" type="tns:TechnologyDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="SimcardWritableDTO" nillable="true" type="tns:SimcardWritableDTO" />
+      <xs:complexType name="ArrayOfServiceFeatureDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ServiceFeatureDTO" nillable="true" type="tns:ServiceFeatureDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfServiceFeatureDTO" nillable="true" type="tns:ArrayOfServiceFeatureDTO" />
+      <xs:complexType name="ServiceFeatureDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ChildFeatureOptions" nillable="true" type="tns:ArrayOfServiceFeatureDTO" />
+          <xs:element minOccurs="0" name="FeatureName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Options" nillable="true" type="tns:ArrayOfNameValueDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ServiceFeatureDTO" nillable="true" type="tns:ServiceFeatureDTO" />
+      <xs:complexType name="ArrayOfNameValueDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="NameValueDTO" nillable="true" type="tns:NameValueDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfNameValueDTO" nillable="true" type="tns:ArrayOfNameValueDTO" />
+      <xs:complexType name="NameValueDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="NameValueDTO" nillable="true" type="tns:NameValueDTO" />
+      <xs:complexType name="ArrayOfSiteGroupLightweightDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SiteGroupLightweightDTO" nillable="true" type="tns:SiteGroupLightweightDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfSiteGroupLightweightDTO" nillable="true" type="tns:ArrayOfSiteGroupLightweightDTO" />
+      <xs:complexType name="SiteGroupLightweightDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="IsDefault" type="xs:boolean" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="SiteGroupLightweightDTO" nillable="true" type="tns:SiteGroupLightweightDTO" />
+      <xs:complexType name="ArrayOfInstallationDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="InstallationDTO" nillable="true" type="tns:InstallationDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfInstallationDTO" nillable="true" type="tns:ArrayOfInstallationDTO" />
+      <xs:complexType name="InstallationDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:InstallationWritableDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="OperationalContact" nillable="true" type="tns:ContactDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InstallationDTO" nillable="true" type="tns:InstallationDTO" />
+      <xs:complexType name="InstallationWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:DetailDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="InstallationID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="InstallationItems" nillable="true" type="tns:ArrayOfInstallationItemDTO" />
+              <xs:element minOccurs="0" name="InstallationStateDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="InstallationStatus" nillable="true" type="tns:InstallStatusDTO" />
+              <xs:element minOccurs="0" name="InstallationType" nillable="true" type="tns:InstallTypeDTO" />
+              <xs:element minOccurs="0" name="InstallationTypeGroup" nillable="true" type="tns:InstallationTypeGroupDTO" />
+              <xs:element minOccurs="0" name="InterfaceReferenceID" type="xs:int" />
+              <xs:element minOccurs="0" name="ModemID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Site" nillable="true" type="tns:SiteLightweightDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InstallationWritableDTO" nillable="true" type="tns:InstallationWritableDTO" />
+      <xs:complexType name="ArrayOfInstallationItemDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="InstallationItemDTO" nillable="true" type="tns:InstallationItemDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfInstallationItemDTO" nillable="true" type="tns:ArrayOfInstallationItemDTO" />
+      <xs:complexType name="InstallationItemDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="InstallationItemDTO" nillable="true" type="tns:InstallationItemDTO" />
+      <xs:complexType name="InstallStatusDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="IsAllowedForNew" type="xs:boolean" />
+              <xs:element minOccurs="0" name="IsAllowedForTermination" type="xs:boolean" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InstallStatusDTO" nillable="true" type="tns:InstallStatusDTO" />
+      <xs:complexType name="InstallTypeDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:InstallTypeWritableDTO">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InstallTypeDTO" nillable="true" type="tns:InstallTypeDTO" />
+      <xs:complexType name="InstallTypeWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="InstallationTypeGroup" nillable="true" type="tns:InstallationTypeGroupDTO" />
+              <xs:element minOccurs="0" name="IsAllowedForNew" type="xs:boolean" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InstallTypeWritableDTO" nillable="true" type="tns:InstallTypeWritableDTO" />
+      <xs:complexType name="InstallationTypeGroupDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:InstallationTypeGroupWritableDTO">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InstallationTypeGroupDTO" nillable="true" type="tns:InstallationTypeGroupDTO" />
+      <xs:complexType name="InstallationTypeGroupWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InstallationTypeGroupWritableDTO" nillable="true" type="tns:InstallationTypeGroupWritableDTO" />
+      <xs:complexType name="ContactDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ContactWritableDTO">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ContactDTO" nillable="true" type="tns:ContactDTO" />
+      <xs:complexType name="ContactWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:DetailDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Attn" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="City" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="EmailAddress" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Firstname" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Initials" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Lastname" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Location" nillable="true" type="tns:LocationDTO" />
+              <xs:element minOccurs="0" name="PhoneNrFax" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PhoneNrHome" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PhoneNrMobile" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PhoneNrWork" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Salute" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="State" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Street1" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Street2" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Street3" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ZipCode" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ContactWritableDTO" nillable="true" type="tns:ContactWritableDTO" />
+      <xs:complexType name="ArrayOfSkyFileAccountLightweightDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SkyFileAccountLightweightDTO" nillable="true" type="tns:SkyFileAccountLightweightDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfSkyFileAccountLightweightDTO" nillable="true" type="tns:ArrayOfSkyFileAccountLightweightDTO" />
+      <xs:complexType name="SkyFileAccountLightweightDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="SkyFileAccountLightweightDTO" nillable="true" type="tns:SkyFileAccountLightweightDTO" />
+      <xs:complexType name="ArrayOfVizadaBoxLightweightDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="VizadaBoxLightweightDTO" nillable="true" type="tns:VizadaBoxLightweightDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfVizadaBoxLightweightDTO" nillable="true" type="tns:ArrayOfVizadaBoxLightweightDTO" />
+      <xs:complexType name="VizadaBoxLightweightDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="HardwareID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="XchangeBoxSerialNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="XchangeBoxSoftwareVersion" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="VizadaBoxLightweightDTO" nillable="true" type="tns:VizadaBoxLightweightDTO" />
+      <xs:complexType name="ArrayOfBoxGroupDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="BoxGroupDTO" nillable="true" type="tns:BoxGroupDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfBoxGroupDTO" nillable="true" type="tns:ArrayOfBoxGroupDTO" />
+      <xs:complexType name="BoxGroupDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BoxGroupWritableDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="BOGroupOwnerName" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="BoxGroupDTO" nillable="true" type="tns:BoxGroupDTO" />
+      <xs:complexType name="BoxGroupWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:DetailDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="BackOfficeGroupExtID" nillable="true" type="xs:long" />
+              <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="SoftwareVersion" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="BoxGroupWritableDTO" nillable="true" type="tns:BoxGroupWritableDTO" />
+      <xs:complexType name="ArrayOfCDSPackageDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CDSPackageDTO" nillable="true" type="tns:CDSPackageDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfCDSPackageDTO" nillable="true" type="tns:ArrayOfCDSPackageDTO" />
+      <xs:complexType name="CDSPackageDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:CDSPackageWritableDTO">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="CDSPackageDTO" nillable="true" type="tns:CDSPackageDTO" />
+      <xs:complexType name="CDSPackageWritableDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:DetailDTO">
+            <xs:sequence>
+              <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ContentTagIds" nillable="true" type="q2:ArrayOflong" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="CDSPackageWritableDTO" nillable="true" type="tns:CDSPackageWritableDTO" />
+      <xs:complexType name="ArrayOfVesselLightweightDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="VesselLightweightDTO" nillable="true" type="tns:VesselLightweightDTO" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfVesselLightweightDTO" nillable="true" type="tns:ArrayOfVesselLightweightDTO" />
+      <xs:complexType name="InstallationLightweightDTO">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SimpleObjectDTO">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="InstallationID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="InstallationStateDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="InstallationStatus" nillable="true" type="tns:InstallStatusDTO" />
+              <xs:element minOccurs="0" name="InstallationType" nillable="true" type="tns:InstallTypeDTO" />
+              <xs:element minOccurs="0" name="InstallationTypeGroup" nillable="true" type="tns:InstallationTypeGroupDTO" />
+              <xs:element minOccurs="0" name="InterfaceReferenceID" type="xs:int" />
+              <xs:element minOccurs="0" name="ModemID" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InstallationLightweightDTO" nillable="true" type="tns:InstallationLightweightDTO" />
+      <xs:complexType name="GenericDataTerminalResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ResponseOfGenericDataTerminalDTOklkoR5_SD">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GenericDataTerminalResponse" nillable="true" type="tns:GenericDataTerminalResponse" />
+      <xs:complexType name="ResponseOfGenericDataTerminalDTOklkoR5_SD">
+        <xs:annotation>
+          <xs:appinfo>
+            <GenericType Name="ResponseOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/BusinessMapAPI" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+              <GenericParameter Name="GenericDataTerminalDTO" Namespace="http://schemas.datacontract.org/2004/07/BusinessMapAPI" />
+            </GenericType>
+          </xs:appinfo>
+        </xs:annotation>
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:VoidResponse">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Detail" nillable="true" type="tns:GenericDataTerminalDTO" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ResponseOfGenericDataTerminalDTOklkoR5_SD" nillable="true" type="tns:ResponseOfGenericDataTerminalDTOklkoR5_SD" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="ArrayOfstring">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring" />
+      <xs:complexType name="ArrayOflong">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="long" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOflong" nillable="true" type="tns:ArrayOflong" />
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IFleetGripIdp_DeleteMessageQueue_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteMessageQueue" />
+  </wsdl:message>
+  <wsdl:message name="IFleetGripIdp_DeleteMessageQueue_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteMessageQueueResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFleetGripIdp_GetAllMessageQueues_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllMessageQueues" />
+  </wsdl:message>
+  <wsdl:message name="IFleetGripIdp_GetAllMessageQueues_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllMessageQueuesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFleetGripIdp_GetMessageQueueById_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMessageQueueById" />
+  </wsdl:message>
+  <wsdl:message name="IFleetGripIdp_GetMessageQueueById_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMessageQueueByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFleetGripIdp_NewMessageQueue_InputMessage">
+    <wsdl:part name="parameters" element="tns:NewMessageQueue" />
+  </wsdl:message>
+  <wsdl:message name="IFleetGripIdp_NewMessageQueue_OutputMessage">
+    <wsdl:part name="parameters" element="tns:NewMessageQueueResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFleetGripIdp_DeleteGenericDataTerminal_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteGenericDataTerminal" />
+  </wsdl:message>
+  <wsdl:message name="IFleetGripIdp_DeleteGenericDataTerminal_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteGenericDataTerminalResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFleetGripIdp_GetAllGenericDataTerminals_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllGenericDataTerminals" />
+  </wsdl:message>
+  <wsdl:message name="IFleetGripIdp_GetAllGenericDataTerminals_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllGenericDataTerminalsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFleetGripIdp_GetGenericDataTerminalById_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetGenericDataTerminalById" />
+  </wsdl:message>
+  <wsdl:message name="IFleetGripIdp_GetGenericDataTerminalById_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetGenericDataTerminalByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFleetGripIdp_NewGenericDataTerminal_InputMessage">
+    <wsdl:part name="parameters" element="tns:NewGenericDataTerminal" />
+  </wsdl:message>
+  <wsdl:message name="IFleetGripIdp_NewGenericDataTerminal_OutputMessage">
+    <wsdl:part name="parameters" element="tns:NewGenericDataTerminalResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IFleetGripIdp">
+    <wsdl:operation name="DeleteMessageQueue">
+      <wsdl:input wsaw:Action="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/DeleteMessageQueue" message="tns:IFleetGripIdp_DeleteMessageQueue_InputMessage" />
+      <wsdl:output wsaw:Action="http://vizada.com/businessmap/2.10.0.0/fleetgripidp/IFleetGripIdp/DeleteMessageQueueResponse" message="tns:IFleetGripIdp_DeleteMessageQueue_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMessageQueues">
+      <wsdl:input wsaw:Action="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/GetAllMessageQueues" message="tns:IFleetGripIdp_GetAllMessageQueues_InputMessage" />
+      <wsdl:output wsaw:Action="http://vizada.com/businessmap/2.10.0.0/fleetgripidp/IFleetGripIdp/GetAllMessageQueuesResponse" message="tns:IFleetGripIdp_GetAllMessageQueues_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMessageQueueById">
+      <wsdl:input wsaw:Action="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/GetMessageQueueById" message="tns:IFleetGripIdp_GetMessageQueueById_InputMessage" />
+      <wsdl:output wsaw:Action="http://vizada.com/businessmap/2.10.0.0/fleetgripidp/IFleetGripIdp/GetMessageQueueByIdResponse" message="tns:IFleetGripIdp_GetMessageQueueById_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NewMessageQueue">
+      <wsdl:input wsaw:Action="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/NewMessageQueue" message="tns:IFleetGripIdp_NewMessageQueue_InputMessage" />
+      <wsdl:output wsaw:Action="http://vizada.com/businessmap/2.10.0.0/fleetgripidp/IFleetGripIdp/NewMessageQueueResponse" message="tns:IFleetGripIdp_NewMessageQueue_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteGenericDataTerminal">
+      <wsdl:input wsaw:Action="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/DeleteGenericDataTerminal" message="tns:IFleetGripIdp_DeleteGenericDataTerminal_InputMessage" />
+      <wsdl:output wsaw:Action="http://vizada.com/businessmap/2.10.0.0/fleetgripidp/IFleetGripIdp/DeleteGenericDataTerminalResponse" message="tns:IFleetGripIdp_DeleteGenericDataTerminal_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllGenericDataTerminals">
+      <wsdl:input wsaw:Action="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/GetAllGenericDataTerminals" message="tns:IFleetGripIdp_GetAllGenericDataTerminals_InputMessage" />
+      <wsdl:output wsaw:Action="http://vizada.com/businessmap/2.10.0.0/fleetgripidp/IFleetGripIdp/GetAllGenericDataTerminalsResponse" message="tns:IFleetGripIdp_GetAllGenericDataTerminals_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGenericDataTerminalById">
+      <wsdl:input wsaw:Action="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/GetGenericDataTerminalById" message="tns:IFleetGripIdp_GetGenericDataTerminalById_InputMessage" />
+      <wsdl:output wsaw:Action="http://vizada.com/businessmap/2.10.0.0/fleetgripidp/IFleetGripIdp/GetGenericDataTerminalByIdResponse" message="tns:IFleetGripIdp_GetGenericDataTerminalById_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NewGenericDataTerminal">
+      <wsdl:input wsaw:Action="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/NewGenericDataTerminal" message="tns:IFleetGripIdp_NewGenericDataTerminal_InputMessage" />
+      <wsdl:output wsaw:Action="http://vizada.com/businessmap/2.10.0.0/fleetgripidp/IFleetGripIdp/NewGenericDataTerminalResponse" message="tns:IFleetGripIdp_NewGenericDataTerminal_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSHttpBinding_IFleetGripIdp" type="tns:IFleetGripIdp">
+    <wsp:PolicyReference URI="#WSHttpBinding_IFleetGripIdp_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="DeleteMessageQueue">
+      <soap12:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/DeleteMessageQueue" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMessageQueues">
+      <soap12:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/GetAllMessageQueues" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMessageQueueById">
+      <soap12:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/GetMessageQueueById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewMessageQueue">
+      <soap12:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/NewMessageQueue" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteGenericDataTerminal">
+      <soap12:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/DeleteGenericDataTerminal" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllGenericDataTerminals">
+      <soap12:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/GetAllGenericDataTerminals" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGenericDataTerminalById">
+      <soap12:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/GetGenericDataTerminalById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewGenericDataTerminal">
+      <soap12:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/NewGenericDataTerminal" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_IFleetGripIdp" type="tns:IFleetGripIdp">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="DeleteMessageQueue">
+      <soap:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/DeleteMessageQueue" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMessageQueues">
+      <soap:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/GetAllMessageQueues" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMessageQueueById">
+      <soap:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/GetMessageQueueById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewMessageQueue">
+      <soap:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/NewMessageQueue" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteGenericDataTerminal">
+      <soap:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/DeleteGenericDataTerminal" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllGenericDataTerminals">
+      <soap:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/GetAllGenericDataTerminals" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGenericDataTerminalById">
+      <soap:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/GetGenericDataTerminalById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewGenericDataTerminal">
+      <soap:operation soapAction="http://vizada.com/businessmap/fleetgripidp/IFleetGripIdp/NewGenericDataTerminal" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FleetGripIdpService">
+    <wsdl:port name="WSHttpBinding_IFleetGripIdp" binding="tns:WSHttpBinding_IFleetGripIdp">
+      <soap12:address location="http://srv-gc-pr02.unitas.mobsat.local/BusinessMap_2.10_ExecomDev/SplitAPI/FleetGripIdp.svc/wshttp" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>http://srv-gc-pr02.unitas.mobsat.local/BusinessMap_2.10_ExecomDev/SplitAPI/FleetGripIdp.svc/wshttp</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_IFleetGripIdp" binding="tns:BasicHttpBinding_IFleetGripIdp">
+      <soap:address location="http://srv-gc-pr02.unitas.mobsat.local/BusinessMap_2.10_ExecomDev/SplitAPI/FleetGripIdp.svc/basic" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

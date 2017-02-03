@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsTryIoTByRegisteringNewDevice", "LetTryIoT\LetsTryIoTByRegisteringNewDevice.csproj", "{AF6A988D-6454-4018-96A3-24A308A89170}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsTryEventHubWithIoT", "LetTryEventHubWithIoT\LetsTryEventHubWithIoT.csproj", "{0D1BCFA7-1748-4242-A9F3-2BAF1FA30E09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsSimulateDevice", "LetSimulateDevice\LetsSimulateDevice.csproj", "{F4F2C160-8F0B-47C2-827C-3B728E70CCD6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF6A988D-6454-4018-96A3-24A308A89170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF6A988D-6454-4018-96A3-24A308A89170}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF6A988D-6454-4018-96A3-24A308A89170}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF6A988D-6454-4018-96A3-24A308A89170}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D1BCFA7-1748-4242-A9F3-2BAF1FA30E09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D1BCFA7-1748-4242-A9F3-2BAF1FA30E09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D1BCFA7-1748-4242-A9F3-2BAF1FA30E09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D1BCFA7-1748-4242-A9F3-2BAF1FA30E09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4F2C160-8F0B-47C2-827C-3B728E70CCD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4F2C160-8F0B-47C2-827C-3B728E70CCD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4F2C160-8F0B-47C2-827C-3B728E70CCD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4F2C160-8F0B-47C2-827C-3B728E70CCD6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8
+	EndGlobalSection
+EndGlobal
