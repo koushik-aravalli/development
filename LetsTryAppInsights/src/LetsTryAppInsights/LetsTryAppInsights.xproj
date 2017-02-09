@@ -6,7 +6,7 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>9b9268c8-5a0c-459f-aa3b-26502aacee15</ProjectGuid>
+    <ProjectGuid>624e1c08-d3f7-485f-a5cc-d805a88f5fcb</ProjectGuid>
     <RootNamespace>LetsTryAppInsights</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
@@ -14,7 +14,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
-    <ApplicationInsightsResourceId>/subscriptions/022e9d31-33c5-4da5-88de-0ad51d253c09/resourcegroups/MarlinkApi-ApplicationInsights/providers/microsoft.insights/components/LetsTryAppInsights</ApplicationInsightsResourceId>
+    <ApplicationInsightsResourceId>/subscriptions/3c8c2399-e32a-4e95-b64d-bcc859324130/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/LetsTryAppInsights</ApplicationInsightsResourceId>
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet.Web\Microsoft.DotNet.Web.targets" Condition="'$(VSToolsPath)' != ''" />
 </Project>

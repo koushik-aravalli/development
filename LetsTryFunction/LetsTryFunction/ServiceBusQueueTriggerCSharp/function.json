@@ -1,0 +1,13 @@
+﻿{
+  "disabled": false,
+  "bindings": [
+    {
+      "name": "inSbMsg",
+      "type": "serviceBusTrigger",
+      "direction": "in",
+      "queueName": "event",
+      "connection": "EventServiceBus",
+      "accessRights": "Manage"
+    }
+  ]
+}

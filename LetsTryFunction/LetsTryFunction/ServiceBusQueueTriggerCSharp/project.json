@@ -1,0 +1,10 @@
+﻿{
+  "frameworks": {
+    "net46":{
+      "dependencies": {
+        "WindowsAzure.ServiceBus": "3.4.0",
+        "Microsoft.ApplicationInsights": "2.2.0"
+      }
+    }
+  }
+}

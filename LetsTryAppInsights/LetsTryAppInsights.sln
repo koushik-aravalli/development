@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LetsTryAppInsights", "src\LetsTryAppInsights\LetsTryAppInsights.xproj", "{9B9268C8-5A0C-459F-AA3B-26502AACEE15}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LetsTryAppInsights", "src\LetsTryAppInsights\LetsTryAppInsights.xproj", "{624E1C08-D3F7-485F-A5CC-D805A88F5FCB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,15 +18,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9B9268C8-5A0C-459F-AA3B-26502AACEE15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B9268C8-5A0C-459F-AA3B-26502AACEE15}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B9268C8-5A0C-459F-AA3B-26502AACEE15}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B9268C8-5A0C-459F-AA3B-26502AACEE15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{624E1C08-D3F7-485F-A5CC-D805A88F5FCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{624E1C08-D3F7-485F-A5CC-D805A88F5FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{624E1C08-D3F7-485F-A5CC-D805A88F5FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{624E1C08-D3F7-485F-A5CC-D805A88F5FCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{9B9268C8-5A0C-459F-AA3B-26502AACEE15} = {2AD7BE9A-934A-4BBD-A31C-41F9D1EEA1B8}
+		{624E1C08-D3F7-485F-A5CC-D805A88F5FCB} = {2AD7BE9A-934A-4BBD-A31C-41F9D1EEA1B8}
 	EndGlobalSection
 EndGlobal
