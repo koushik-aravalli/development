@@ -1,0 +1,72 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "keyvaultname": {
+      "type": "string"
+    },   
+    "sku": {
+      "type": "string",
+      "defaultValue": "Standard",
+      "allowedValues": [
+        "Standard",
+        "standard",
+        "Premium",
+        "premium"
+      ],
+      "metadata": {
+        "description": "SKU for the vault"
+      }
+    },
+    "accessPolicyObjectId": {
+      "type": "string",
+      "metadata": {
+        "description": "The objectid of the user that has access to this vault."
+      }
+    },   
+    "enabledForDeployment": {
+      "defaultValue": true,
+      "type": "bool"
+    },
+    "enabledForTemplateDeployment": {
+      "defaultValue": true,
+      "type": "bool"
+    },
+    "enabledForDiskEncryption": {
+      "defaultValue": false,
+      "type": "bool"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-06-01",
+      "name": "[parameters('keyvaultname')]",
+      "location": "[resourceGroup().location]",
+      "type": "Microsoft.KeyVault/vaults",
+      "properties": {
+        "enabledForDeployment": "[parameters('enabledForDeployment')]",
+        "enabledForTemplateDeployment": "[parameters('enabledForTemplateDeployment')]",
+        "enabledForDiskEncryption": "[parameters('enabledForDiskEncryption')]",
+        "accessPolicies": [
+          {
+            "tenantId": "[subscription().tenantId]",
+            "objectId": "[parameters('accessPolicyObjectId')]",
+            "permissions": {
+              "keys": [
+                "all"
+              ],
+              "secrets": [
+                "all"
+              ]
+            }
+          }
+        ],
+        "tenantId": "[subscription().tenantId]",
+        "sku": {
+          "name": "[parameters('sku')]",
+          "family": "A"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+  </PropertyGroup>
+  
+  <Target Name="BeforeBuild">
+    <NugetContentRestoreTask AdditionalFolders="content" SolutionDir="$(SolutionDir)" ProjectDir="$(ProjectDir)" />
+    <!--
+    <ItemGroup>
+      <_CopyItems Include="$(SolutionDir)packages\ContentFilesExample.*\contentfiles\Resources\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_CopyItems)" DestinationFolder="$(OutDir)\%(Directory)%(Filename)%(Extension)" />
+    -->
+  </Target>
+  
+  <ItemGroup>
+    <PackageReference Include="Baseclass.Contrib.Nuget.Output" Version="2.3.0" />
+    <PackageReference Include="Core.Integration.Azure.Arm" Version="1.0.0" />
+    <PackageReference Include="Core.Integration.Azure.Deployment" Version="1.0.0" />
+    <PackageReference Include="MSBuild.NugetContentRestore" Version="0.1.6" />
+  </ItemGroup>
+
+</Project>

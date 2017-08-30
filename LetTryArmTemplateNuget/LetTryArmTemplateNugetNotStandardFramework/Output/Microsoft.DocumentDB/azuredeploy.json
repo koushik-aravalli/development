@@ -1,0 +1,50 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "databaseAccountName": {
+      "type": "string",
+      "minLength": 1,
+      "metadata": {
+        "description": "Full name of the documentDB"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "metadata": {
+        "description": "Metadata for this resource"
+      }
+    }
+  },
+  "variables": {
+    
+  },
+  "resources": [
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "name": "[parameters('databaseAccountName')]",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-31",
+      "properties": {
+        "databaseAccountOfferType": "Standard"
+      },
+      "tags": {
+        "department": "[parameters('metadata').department]",
+        "projectName": "[parameters('metadata').projectName]",
+        "owner": "[parameters('metadata').owner]",
+        "environment": "[parameters('metadata').environment]"
+      }
+    }
+  ],
+  "outputs": {
+    //"PrimaryMasterKey": {
+    //  "type": "string",
+    //  "value": "[listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName').name), providers('Microsoft.DocumentDB','databaseAccounts').apiVersions[0]).primaryMasterKey]"
+    //},
+    
+    "connectionString": {
+      "value": "[concat('AccountEndpoint=https://', parameters('databaseAccountName'), '.documents.azure.com:443/;AccountKey=', listkeys(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')), '2016-03-31').primaryMasterKey)]",
+      "type": "string"
+    }
+  }
+}

@@ -15,8 +15,9 @@ namespace LetsTryAppInsights.Controllers
 
         public ValuesController()
         {
-            _telemetry.InstrumentationKey = "afd1ae9b-0d73-4ceb-b25f-9a9c0a00dc60";
+            _telemetry.InstrumentationKey = "982fb8ca-c7ee-4bfe-8510-c672a2081c5a";
         }
+
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
@@ -45,6 +46,7 @@ namespace LetsTryAppInsights.Controllers
         [HttpPost]
         public void Post([FromBody]string value)
         {
+
         }
 
         // PUT api/values/5

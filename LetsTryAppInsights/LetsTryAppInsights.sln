@@ -1,16 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2AD7BE9A-934A-4BBD-A31C-41F9D1EEA1B8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{28C303AA-9745-48CB-B100-A566FBB9BDBB}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LetsTryAppInsights", "src\LetsTryAppInsights\LetsTryAppInsights.xproj", "{624E1C08-D3F7-485F-A5CC-D805A88F5FCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetsTryAppInsights", "src\LetsTryAppInsights\LetsTryAppInsights.csproj", "{624E1C08-D3F7-485F-A5CC-D805A88F5FCB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

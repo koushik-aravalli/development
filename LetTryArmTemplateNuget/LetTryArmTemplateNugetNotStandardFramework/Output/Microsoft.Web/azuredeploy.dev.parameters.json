@@ -1,0 +1,63 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "naming": {
+      "value": {
+        "prefix": "dev",
+        "postfix": "we"
+      }
+    },
+    "metadata": {
+      "value": {
+        "department": "Horti",
+        "company": "Priva",
+        "projectName": "Operator",
+        "owner": "Operator",
+        "environment": "dev"
+      }
+    },
+    "domainName": {
+      "value": "maintenance-dev.priva.nl"
+    },
+    "webSiteName": {
+      "value": "maintenance"
+    },
+    "hostingPlanName": {
+      "value": "maintenance"
+    },
+    "skuName": {
+      "value": "S1"
+    },
+    "skuCapacity": {
+      "value": 1
+    },
+    "appSettings": {
+      "value": [
+        {
+          "name": "Password", 
+          "value": "OperatorInTheCloud" },
+        {
+          "name": "webpages:Version",
+          "value": "3.0.0.0"
+        },
+        {
+          "name": "webpages:Enabled",
+          "value": "false"
+        },
+        {
+          "name": "ClientValidationEnabled",
+          "value": "true"
+        },
+        {
+          "name": "UnobtrusiveJavaScriptEnabled",
+          "value": "true"
+        },
+        {
+          "name": "IoTHubUri",
+          "value": "deviotbackendihwe.azure-devices.net"
+        }
+      ]
+    }
+  }
+}
