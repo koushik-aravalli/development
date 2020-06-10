@@ -1,0 +1,60 @@
+parameters:
+- name: ServiceConnectionName
+  type: string
+- name: FunctionAppName
+  type: string
+- name: FunctionAppSpnName
+  type: string
+- name: KeyVaultName
+  type: string
+- name: AuthSPPasswordSecretName
+  type: string
+- name: AuthSPObjectIdSecretName
+  type: string
+- name: AuthSPApplicationIdSecretName
+  type: string
+- name: SNGCallNumber
+  type: string
+  default: CAL0085486
+
+jobs:
+  - job: create_register_aad_app
+    displayName: Create and Register app in Azure AD
+    dependsOn: create_keyvault
+    steps:
+    - task: abnamrocbspazure.AbnAmro-CbspAzure-Products.AbnAmro-CbspAzure-ServicePrincipal.AbnAmro-CbspAzure-Azure-Service-Principal@3
+      displayName: 'New: Service Principal for AAD validation of Azurefunction Caller'
+      inputs:
+        azureSubscription: ${{ parameters.ServiceConnectionName }}
+        SpName: '${{ parameters.FunctionAppSpnName }}'
+        KeyVaultName: ${{ parameters.KeyVaultName }}
+        ExplicitlySpecifySecretNames: true
+        SpPasswordIdentifier: ${{ parameters.AuthSPPasswordSecretName }}
+        SpObjectIdIdentifier: ${{ parameters.AuthSPObjectIdSecretName }}
+        SpApplicationIdIdentifier: ${{ parameters.AuthSPApplicationIdSecretName }}
+
+    - task: abnamrocbspazure.AbnAmro-CbspAzure-Products.AbnAmro-CbspAzure-ServicePrincipal.AbnAmro-CbspAzure-Azure-Service-Principal@3
+      displayName: 'New: Configure App Registration'
+      enabled: true
+      inputs:
+        azureSubscription: ${{ parameters.ServiceConnectionName }}
+        Action: configureAppRegistration
+        SpName: '${{ parameters.FunctionAppSpnName }}'
+        RequestDelegatedPermissions: true
+        Environment: $(Environment)
+        DelegatedPermissions: |
+          Microsoft Graph:
+          - email
+          - openid
+          - profile
+          Azure AD:
+          - User.Read
+        SngTicketNumber: ${{ parameters.SNGCallNumber }}
+        IncludeSecurityGroupsInToken: true
+        EnableAzureAdSso: true
+        RedirectURLs: https://${{ parameters.FunctionAppName }}.azurewebsites.net/.auth/login/aad/callback
+        AddApiScope: true
+        ApiScopes: |
+          user_impersonation:
+            ConsentDisplayName: Logon the user
+            ConsentDescription: Allow the application on behalf of the signed-in user.

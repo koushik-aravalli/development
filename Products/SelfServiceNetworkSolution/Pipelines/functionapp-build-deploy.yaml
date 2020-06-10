@@ -1,0 +1,323 @@
+# Following stages are designed in this pipeline
+# - Deploy CBSP Infrastructure
+# - Build and Publish FunctionApp
+# - Deploy FunctionApp
+# - Configure FunctionApp with API
+#
+# Following are environment varibles that need to be set on the Pipeline Varaible
+#   -'serviceconnection_name' --> 'devops-azure-engineering' | 'devops-selfservice-azuread'
+#   -'environment_alias' --> e | p
+#   -'PAT_UPDATE' --> true | false
+#   -'Environment' --> Engineering | Production
+#   -'OmsWorkspaceResourceId' --> 
+# 
+# Build Name
+name: $(TeamProject)_$(BuildDefinitionName)_$(SourceBranch)_$(Date:yyyyMMdd)$(Rev:.r)
+
+# Trigger
+trigger: none
+
+# Global variables
+variables:
+  resourcegroup_name: 'cbsp-azfunc-$(environment_alias)-rg'
+  PlatformKeyvaultName: selfservice-p-kv
+  tenantId: '3a15904d-3fd9-4256-a753-beb05cdf0c6d'
+  RELEASE_RELEASEWEBURL: 'https://dev.azure.com/cbsp-abnamro/Azure/_build/results?buildId=$(Build.BuildId)'
+
+stages:
+  - stage: validate_pipleine_variables
+    displayName: Validate Pipeline Variables
+    jobs:
+    - job: validate_variables
+      displayName: Validate Variables
+      steps:
+      - checkout: self
+      - powershell: |
+          If( "$(environment_alias)" -notin 'e','p'){
+            Throw "Environment Alias values can be one of 'e' or 'p'" 
+          }
+          If( [string]::IsNullOrEmpty("$(OmsWorkspaceResourceId)") ){
+            Throw "OmsWorkspaceResourceId cannot be empty" 
+          }
+          If( "$(environment_alias)" -eq 'e' -and "$(OmsWorkspaceResourceId)" -notlike '*oms-d-rg*'){
+            Throw "Environment Alias 'e' should have OMS workspace in resourcegroup oms-d-rg" 
+          }
+          If( "$(environment_alias)" -eq 'p' -and "$(OmsWorkspaceResourceId)" -notlike '*oms-rg*'){
+            Throw "Environment Alias 'p' should have OMS workspace in resourcegroup oms-rg" 
+          }
+          Else{
+            Write-Host "Validation passed"
+          }
+
+  - stage: deploy_cbsp_infra
+    displayName: 'Deploy CBSP Artifacts'
+    dependsOn: validate_pipleine_variables
+    condition: eq(dependencies.validate_pipleine_variables.result, 'Succeeded')
+    variables:
+      storageAccount_name: 'networkapi01$(environment_alias)sa'
+      keyvault_name: 'networkapi01-$(environment_alias)-kv'
+      authSPPasswordSecretName: 'networkapi01-$(environment_alias)-auth-sp-secretname'
+      authSPObjectIdSecretName: 'networkapi01-$(environment_alias)-auth-sp-objectid'
+      authSPApplicationIdSecretName: 'networkapi01-$(environment_alias)-auth-sp-applicationid'
+      functionapp_name: 'networkapi-$(environment_alias)'
+      functionapp_spn_name: $(functionapp_name)-SP
+      applicationinsights_name: 'networkapi-$(environment_alias)-ai'
+      rg_spn_objectId: '4c4b0ddb-d71b-4aa9-9a4c-4c14670333bd'
+      rg_reader_groupId: '8b8c5767-d3ab-44ae-b360-2706c38995be'
+
+    pool:
+      vmImage: windows-latest
+    jobs:
+    - template: Templates/cbsp-storageaccount.yaml
+      parameters:
+        StorageAccountName: $(storageAccount_name)
+        ServiceConnectionName: $(serviceconnection_name)
+
+    - template: Templates/cbsp-keyvault.yaml
+      parameters:
+        KeyVaultName: $(keyvault_name)
+        ServiceConnectionName: $(serviceconnection_name)
+        GroupId: $(rg_reader_groupId)
+        ServicePrincipalObjectId: $(rg_spn_objectId)
+
+    - template: Templates/cbsp-appinsights.yaml
+      parameters:
+        ApplicationInsightsName: $(applicationinsights_name)
+        ServiceConnectionName: $(serviceconnection_name)
+
+    - template: Templates/cbsp-create-register-app.yaml
+      parameters:
+        ServiceConnectionName: $(serviceconnection_name)
+        FunctionAppName: $(functionapp_name)
+        FunctionAppSpnName: $(functionapp_spn_name)
+        KeyVaultName: $(keyvault_name)
+        AuthSPPasswordSecretName: $(authSPPasswordSecretName)
+        AuthSPObjectIdSecretName: $(authSPObjectIdSecretName)
+        AuthSPApplicationIdSecretName: $(authSPApplicationIdSecretName)
+
+    - template: Templates/cbsp-functionapp.yaml
+      parameters:
+        ServiceConnectionName: $(serviceconnection_name)
+        FunctionAppName: $(functionapp_name)
+        StorageAccountName: $(storageAccount_name)
+        KeyVaultName: $(keyvault_name)
+        ApplicationInsightsName: $(applicationinsights_name)
+        AuthSPPasswordSecretName: $(authSPPasswordSecretName)
+        AuthSPObjectIdSecretName: $(authSPObjectIdSecretName)
+        AuthSPApplicationIdSecretName: $(authSPApplicationIdSecretName)
+
+  - stage: build_publish
+    displayName: Build and Publish
+    condition: always()
+    pool:
+      vmImage: windows-latest
+    variables:
+      sourcevaultname: 'nss01-d-kv'
+      keyvault_name: 'networkapi01-$(environment_alias)-kv'
+      Values.AzDevopsOptions:SourceBranch: master
+      Values.AzKeyVaultOptions:Name: $(keyvault_name)
+
+    jobs:
+    - job: copy_secrets_from_nss
+      displayName: Copy PAT Secrets to $(keyvault_name) 
+      condition: eq(variables['PAT_UPDATE'], 'true')
+      steps:
+      - checkout: self
+      - task: AzurePowerShell@4
+        displayName: 'az ps: Copy secrets from source KV to $(keyvault_name)'
+        name: copy_secret_keyvault
+        inputs:
+          azureSubscription: $(serviceconnection_name)
+          ScriptType: InlineScript
+          Inline: |
+              $secretNames = (Get-AzKeyVaultSecret -VaultName $(sourceVaultName) ).Name `
+                            | Where-Object -Filterscript { $_ -in `
+                                ('npa-pat-highprivpipeline','npa-pat-pushbuildartifactstogitrepo') `
+                              }
+              $patsecret = Set-AzKeyVaultSecret -VaultName $(keyvault_name) -Name $secretNames[0] -SecretValue (Get-AzKeyVaultSecret -VaultName $(sourceVaultName) -Name $secretNames[0]).SecretValue
+              $functionapp_kvconfig_patsecret = "@Microsoft.KeyVault(SecretUri=$($patsecret.Id))"
+              Write-Verbose -Message "PAT $secretNames[0] has Uri  $functionapp_kvconfig_patsecret"
+              Write-Host "##vso[task.setvariable variable=kvPatSecret;isOutput=true]$functionapp_kvconfig_patsecret"
+
+              $repopatsecret = Set-AzKeyVaultSecret -VaultName $(keyvault_name) -Name $secretNames[1] -SecretValue (Get-AzKeyVaultSecret -VaultName $(sourceVaultName) -Name $secretNames[1]).SecretValue
+              $functionapp_kvconfig_repopatsecret = "@Microsoft.KeyVault(SecretUri=$($repopatsecret.Id))"
+              Write-Verbose -Message "PAT $secretNames[1] has Uri $functionapp_kvconfig_repopatsecret "
+              Write-Host "##vso[task.setvariable variable=kvRepoPatSecret;isOutput=true]$functionapp_kvconfig_repopatsecret"
+          azurePowerShellVersion: LatestVersion
+
+    - job: dotnet_build_publish
+      displayName: Build and Publish FunctionApp 
+      dependsOn: copy_secrets_from_nss
+      condition: in(dependencies.copy_secrets_from_nss.result, 'Succeeded', 'Skipped' )
+      variables:
+        Values.AzKeyVaultOptions:PatSecret: $[ dependencies.copy_secrets_from_nss.outputs['copy_secret_keyvault.kvPatSecret'] ]
+        Values.AzKeyVaultOptions:RepoPatSecret: $[ dependencies.copy_secrets_from_nss.outputs['copy_secret_keyvault.kvRepoPatSecret'] ]
+      steps:
+      - checkout: self
+      - powershell: |
+          Write-Host "High Priv Pipeline PAT KV Url - $(Values.AzKeyVaultOptions:PatSecret)"
+          Write-Host "Artifact Publisher PAT KV Url - $(Values.AzKeyVaultOptions:RepoPatSecret)"
+      - task: DotNetCoreCLI@2
+        displayName: 'Build project'
+        inputs:
+          projects: '$(System.DefaultWorkingDirectory)/Products/SelfServiceNetworkSolution/FunctionApp/NetworkApi/*.csproj'
+          arguments: '--output publish_output --configuration Release'
+
+      - task: ArchiveFiles@2
+        displayName: 'Archive files'
+        inputs:
+          rootFolderOrFile: 'publish_output/'
+          includeRootFolder: false
+
+      - task: FileTransform@2
+        displayName: 'Generate AppSettings'
+        inputs:
+          folderPath: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+          jsonTargetFiles: app.settings.json
+          xmlTransformationRules: ''
+
+      - task: CopyFiles@2
+        displayName: 'Copy AppSettings to Artifacts'
+        inputs:
+          sourceFolder: $(Agent.TempDirectory)
+          contents: '**\app.settings.json'
+          targetfolder: $(Build.Artifactstagingdirectory)
+          flattenFolders: true
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact: drop'
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Drop PS script'
+        enabled: true
+        inputs:
+          pathToPublish: $(System.DefaultWorkingDirectory)/Products/SelfServiceNetworkSolution/v1/Scripts/AppSettings-To-String.ps1
+          artifactName: drop
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Drop AppSettings json'
+        enabled: false
+        inputs:
+          pathToPublish: $(Agent.TempDirectory)\temp_web_package_*\app.settings.json
+          artifactName: drop
+
+  - stage: configure_api
+    displayName: Configure NetworkApi Application Settings
+    dependsOn: 
+      - build_publish
+      - deploy_cbsp_infra
+    condition: and(in(dependencies.deploy_cbsp_infra.result, 'Succeeded', 'Skipped'), eq(dependencies.build_publish.result, 'Succeeded'))
+    variables:
+      keyvault_name: 'networkapi01-$(environment_alias)-kv'
+      functionapp_name: 'networkapi-$(environment_alias)'
+
+    jobs: 
+    - job: configure_function_app
+      displayName: Configure FunctionApp Setting
+      condition: always()
+      steps:
+      - checkout: self
+        persistCredentials: true
+      - task: DownloadBuildArtifacts@0
+        displayName: 'artifact: Download artifacts'
+        name: download_artifacts
+        enabled: true
+        inputs:
+          buildType: 'current'
+          downloadPath: '$(System.ArtifactsDirectory)'
+          artifactName: 'drop'
+
+      - task: PowerShell@2
+        displayName: 'ps: Create AppSettings'
+        name: create_appsettings
+        enabled: true
+        inputs:
+          pwsh: true
+          targetType: 'filepath'
+          filePath: $(System.ArtifactsDirectory)/drop/AppSettings-To-String.ps1
+          arguments: "-AppSettingsLocation $(System.ArtifactsDirectory)/drop/app.settings.json"
+
+      - task: AzureCLI@1
+        displayName: 'az cli: update app settings'
+        enabled: true
+        inputs:
+          azureSubscription: $(serviceconnection_name)
+          scriptLocation: inlineScript
+          inlineScript: 'az functionapp config appsettings set --name $(functionapp_name) --resource-group $(resourcegroup_name) --settings $(create_appsettings.appsettings)'
+
+  - stage: deploy_api
+    displayName: Deploy NetworkApi FunctionApp
+    dependsOn: 
+      - build_publish
+      - deploy_cbsp_infra
+      - configure_api
+    condition: and(in(dependencies.deploy_cbsp_infra.result, 'Succeeded', 'Skipped'), eq(dependencies.build_publish.result, 'Succeeded'), eq(dependencies.configure_api.result, 'Succeeded'))
+    variables:
+      functionapp_name: 'networkapi-$(environment_alias)'
+      ASPNETCORE_ENVIRONMENT: 'Development'
+
+    jobs: 
+    - job: deploy_function_app
+      displayName: Deploy API to RG 
+      steps:
+      - checkout: self
+        persistCredentials: true
+      - task: DownloadBuildArtifacts@0
+        displayName: 'artifact: Download artifacts'
+        name: download_artifacts
+        enabled: true
+        inputs:
+          buildType: 'current'
+          downloadPath: '$(System.ArtifactsDirectory)'
+          artifactName: 'drop'
+      - task: AzureFunctionApp@1
+        displayName: 'Azure Function App Deploy: $(functionapp_name)'
+        inputs:
+          azureSubscription: $(serviceconnection_name)
+          appType: functionApp
+          appName: $(functionapp_name)
+          package: '$(System.ArtifactsDirectory)/**/*.zip'
+          deploymentMethod: runFromPackage
+          appSettings: '-ASPNETCORE_ENVIRONMENT $(ASPNETCORE_ENVIRONMENT) -WEBSITE_RUN_FROM_PACKAGE 1'
+
+  - stage: cleanup_resources
+    displayName: Cleanup Infrastructure
+    dependsOn: deploy_cbsp_infra
+    condition: eq(dependencies.deploy_cbsp_infra.result, 'Failed')
+    pool:
+      vmImage: windows-latest
+    variables:
+      keyvault_name: 'networkapi01-$(environment_alias)-kv'
+      functionapp_name: 'networkapi-$(environment_alias)'
+      functionapp_spn_name: $(functionapp_name)-SP
+      authSPPasswordSecretName: 'networkapi01-$(environment_alias)-auth-sp-secretname'
+      authSPObjectIdSecretName: 'networkapi01-$(environment_alias)-auth-sp-objectid'
+      authSPApplicationIdSecretName: 'networkapi01-$(environment_alias)-auth-sp-applicationid'
+
+    jobs: 
+    - job: cleanup_spn
+      steps:
+      - checkout: self
+      - task: abnamrocbspazure.AbnAmro-CbspAzure-Products.AbnAmro-CbspAzure-ServicePrincipal.AbnAmro-CbspAzure-Azure-Service-Principal@3
+        displayName: 'Remove Service Principal'
+        inputs:
+          azureSubscription: $(serviceconnection_name)
+          Action: remove
+          SpName: $(functionapp_spn_name)
+          KeyVaultName: $(keyvault_name)
+          removeConfirmation: true
+          ExplicitlySpecifySecretNames: true
+          SpPasswordIdentifier: $(authSPPasswordSecretName)
+          SpObjectIdIdentifier: $(authSPObjectIdSecretName)
+          SpApplicationIdIdentifier: $(authSPApplicationIdSecretName)
+
+      - task: AzureCLI@2
+        displayName: 'Delete and purge SPN objectId,AppId,password'
+        inputs:
+          azureSubscription: $(serviceconnection_name)
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |
+            az keyvault secret purge --name $(authSPPasswordSecretName) --vault-name $(keyvault_name)
+            az keyvault secret purge --name $(authSPObjectIdSecretName) --vault-name $(keyvault_name)
+            az keyvault secret purge --name $(authSPApplicationIdSecretName) --vault-name $(keyvault_name)

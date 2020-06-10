@@ -1,0 +1,520 @@
+{
+  "NSGFlowLogs": [
+    {
+      "Engineering": {
+        "workspaceResourceGroupName": "oms-d-rg",
+        "workspaceName": "infra-d-oms",
+        "storageAccountResourceGroupName": "networkwatcher-e-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanalyticse01sa"
+          }
+        ]
+      },
+      "Management": {
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpman01sa"
+          },
+          {
+            "location": "uksouth",
+            "storageAccountName": "trafficanpmanuk01sa"
+          }
+        ]
+      },
+      "VDC1": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc101sa"
+          },
+          {
+            "location": "northeurope",
+            "storageAccountName": "trafficanpvdc1ne01sa"
+          },
+          {
+            "location": "uksouth",
+            "storageAccountName": "trafficanpvdc1uk01sa"
+          }
+        ]
+      },
+      "VDC2S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc2s01sa"
+          }
+        ]
+      },
+      "VDC3S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc3s01sa"
+          }
+        ]
+      },
+      "VDC4S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc4s01sa"
+          }
+        ]
+      },
+      "VDC5S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc5s01sa"
+          }
+        ]
+      },
+      "VDC6S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc6s01sa"
+          }
+        ]
+      },
+      "VDC7S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc7s01sa"
+          }
+        ]
+      },
+      "VDC8S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc8s01sa"
+          }
+        ]
+      },
+      "VDC9S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc9s01sa"
+          }
+        ]
+      },
+      "VDC10S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc10s01sa"
+          }
+        ]
+      },
+      "VDC11S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc11s01sa"
+          }
+        ]
+      },
+      "VDC12S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc12s01sa"
+          }
+        ]
+      },
+      "VDC13S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc13s01sa"
+          }
+        ]
+      },
+      "VDC14S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc14s01sa"
+          }
+        ]
+      },
+      "VDC15S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc15s01sa"
+          }
+        ]
+      },
+      "VDC16S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc16s01sa"
+          }
+        ]
+      },
+      "VDC17S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc17s01sa"
+          }
+        ]
+      },
+      "VDC18S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc18s01sa"
+          }
+        ]
+      },
+      "VDC19S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc19s01sa"
+          }
+        ]
+      },
+      "VDC20S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc20s01sa"
+          }
+        ]
+      },
+      "VDC21S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc21s01sa"
+          }
+        ]
+      },
+      "VDC22S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc22s01sa"
+          }
+        ]
+      },
+      "VDC23S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc23s01sa"
+          }
+        ]
+      },
+      "VDC24S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc24s01sa"
+          }
+        ]
+      },
+      "VDC25S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc25s01sa"
+          }
+        ]
+      },
+      "VDC26S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc26s01sa"
+          }
+        ]
+      },
+      "VDC27S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc27s01sa"
+          }
+        ]
+      },
+      "VDC28S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc28s01sa"
+          }
+        ]
+      },
+      "VDC29S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc29s01sa"
+          }
+        ]
+      },
+      "VDC30S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc30s01sa"
+          }
+        ]
+      },
+      "VDC31S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc31s01sa"
+          }
+        ]
+      },
+      "VDC32S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc32s01sa"
+          }
+        ]
+      },
+      "VDC33S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc33s01sa"
+          }
+        ]
+      },
+      "VDC34S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc34s01sa"
+          }
+        ]
+      },
+      "VDC35S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc35s01sa"
+          }
+        ]
+      },
+      "VDC36S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc36s01sa"
+          }
+        ]
+      },
+      "VDC37S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc37s01sa"
+          }
+        ]
+      },
+      "VDC38S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc38s01sa"
+          }
+        ]
+      },
+      "VDC39S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc39s01sa"
+          }
+        ]
+      },
+      "VDC40S": {
+        "workspaceSubscriptionId": "b658ffad-30c7-4be6-881c-e3dc1f6520af",
+        "workspaceResourceGroupName": "oms-rg",
+        "workspaceName": "infra-p-oms",
+        "storageAccountResourceGroupName": "networkwatcher-p-rg",
+        "locations": [
+          {
+            "location": "westeurope",
+            "storageAccountName": "trafficanpvdc40s01sa"
+          }
+        ]
+      }
+    }
+  ]
+}

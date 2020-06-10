@@ -1,0 +1,282 @@
+# Build to create and publish the Azure DevOps extension containing the CBSP Azure self-service platform products.
+
+# Build Name
+name: SelfServicePlatformProductsExtension-$(Date:yyyyMMdd)-$(SourceBranchName)-$(Rev:rr)
+
+trigger:
+  branches:
+    include:
+      - master
+      - release
+  paths:
+    include: 
+      - ProductTasksExtension/*   
+    exclude:  
+      - Solutions/Networking/*
+    
+# Variables - Global level
+variables:
+  ProductsExtensionIdRelease: 'AbnAmro-CbspAzure-Platform-Products'
+  ProductsExtensionIdValidation: 'AbnAmro-CbspAzure-Platform-Products-Validation'
+  ExtensionNameRelease: 'CBSP Azure Platform Products'
+  ExtensionNameValidation: 'CBSP Azure Platform Products (Validation)'
+  MarketplacePublisherIdRelease: 'abnamrocbspazureplatform'
+  MarketplacePublisherIdValidation: 'ABNAMROCBSPAzurePlatformProductsValidation'
+  ArtifactName: 'PlatformExtension'
+  ShareWithOrganization: 'cbsp-abnamro'
+  ShareWithOrganizationValidation: 'cbsp-selfservice-platform-validation'
+
+  ## variables for bug creation task
+  system_definitionname: $(System.DefinitionName)
+  OrganizationName: 'cbsp-abnamro'
+  ProjectName: 'Azure'
+  ItemTypeName: 'Backlog items'
+  ItemWorkType: 'Bug'
+  ### artifacts path within self repo
+  pwsh_script_path: $(System.DefaultWorkingDirectory)/Products/SelfServiceNetworkSolution/v1/Scripts
+  ### Path to the bug creation template
+  template_path: Templates/bug-creation-template.yaml
+
+pool:
+  name: Hosted VS2017
+  demands: npm
+
+stages: 
+  # Stage to package the extension
+  - stage: Package_Extension
+    jobs:
+    - job: package_extension
+      displayName: Package the extension 
+      condition: always()
+      steps:
+      - checkout: self
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: $(Build.SourcesDirectory)/ProductTasksExtension
+          Contents: '**'
+          TargetFolder: $(Build.ArtifactStagingDirectory)
+      - task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Build-InlinePowershell.Xpirit-Vsts-Build-InlinePowershell.InlinePowershell@1
+        displayName: 'Determine ProductExtensionId and ExtensionName'
+        name: determine_extension
+        inputs:
+          Script: |
+            Write-Host "Getting the source branch"
+            $branchName = "$(Build.SourceBranchName)"
+            Write-Host "$branchName"
+            
+            If ($branchName -eq "release") {
+                Write-Host "##vso[task.setvariable variable=ProductsExtensionId;]$(ProductsExtensionIdRelease)"
+                Write-Host "##vso[task.setvariable variable=ExtensionName;]$(ExtensionNameRelease)"
+                Write-Host "##vso[task.setvariable variable=MarketplacePublisherId;]$(MarketplacePublisherIdRelease)"
+                Write-Host "##vso[task.setvariable variable=environment_alias;isOutput=true]p"
+            } 
+            Else {
+              Write-Host "##vso[task.setvariable variable=ProductsExtensionId;]$(ProductsExtensionIdValidation)"
+              Write-Host "##vso[task.setvariable variable=ExtensionName;]$(ExtensionNameValidation)"
+              Write-Host "##vso[task.setvariable variable=MarketplacePublisherId;]$(MarketplacePublisherIdValidation)"
+              Write-Host "##vso[task.setvariable variable=environment_alias;isOutput=true]e"
+            } 
+      - task: PowerShell@2
+        displayName: 'ps: Replace environment tokens'
+        name: replace_tokens
+        enabled: true
+        inputs:
+          targetType: 'filepath'
+          pwsh: false
+          filePath: $(System.DefaultWorkingDirectory)/Products/SelfServiceNetworkSolution/v1/Scripts/Replace-Token.ps1
+          arguments: |
+            -RootDirectory '$(Build.ArtifactStagingDirectory)/ProductTasks' `
+            -TokenFile 'Invoke-TriggerFunction.ps1' `
+            -TokenPrefix '#{' `
+            -TokenSuffix '}#' `
+            -ReplaceValue "$(determine_extension.environment_alias)"
+        
+      - task: Npm@1
+        displayName: 'npm install'
+        inputs:
+          workingDir: $(Build.ArtifactStagingDirectory)
+          verbose: false
+
+      - task: Npm@1
+        displayName: 'npm install latest tfx-cli'
+        inputs:
+          command: custom
+          workingDir: $(Build.ArtifactStagingDirectory)
+          verbose: false
+          customCommand: 'install tfx-cli --prefix D:\a\_tools'
+
+      # - task: Npm@1
+      #   displayName: 'npm config set instrumentationKey'
+      #   inputs:
+      #     command: custom
+      #     workingDir: ProductTasksExtension
+      #     verbose: false
+      #     customCommand: 'config set cbsp-azure-platform-products:instrumentationKey "$(InstrumentationKey)" --global'
+
+      - task: Npm@1
+        displayName: 'npm run build:all'
+        inputs:
+          command: custom
+          workingDir: $(Build.ArtifactStagingDirectory)
+          verbose: false
+          customCommand: 'run build:all'
+
+      - task: ms-devlabs.vsts-developer-tools-build-tasks.tfx-installer-build-task.TfxInstaller@2
+        displayName: 'Use Node CLI for Azure DevOps: v0.7.x'
+        inputs:
+          version: v0.7.x
+
+      - task: ms-devlabs.vsts-developer-tools-build-tasks.extension-version-build-task.QueryAzureDevOpsExtensionVersion@2
+        displayName: 'Query Extension Version: $(MarketplacePublisherId).$(ProductsExtensionId)'
+        name: get_version
+        inputs:
+          connectedServiceName: 'devops-extension-platformselfservice'
+          publisherId: '$(MarketplacePublisherId)'
+          extensionId: '$(ProductsExtensionId)'
+          versionAction: Patch
+
+      - task: ms-devlabs.vsts-developer-tools-build-tasks.package-extension-build-task.PackageAzureDevOpsExtension@2
+        displayName: 'Package Extension: ProductTasksExtension'
+        inputs:
+          rootFolder: $(Build.ArtifactStagingDirectory)
+          outputPath: $(Agent.TempDirectory)/ProductTasksExtension/dist
+          extensionId: '$(ProductsExtensionId)'
+          extensionName: '$(ExtensionName)'
+          extensionVersion: '$(get_version.Extension.Version)'
+          extensionVisibility: 'private_preview'
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact: $(ArtifactName)'
+        inputs:
+          PathtoPublish: '$(Agent.TempDirectory)/ProductTasksExtension/dist'
+          ArtifactName: '$(ArtifactName)'
+
+      - template:  ${{variables['template_path']}}
+        parameters:
+          TeamName: 'Platform Enablement Team 1'
+          ScriptPath: ${{variables['pwsh_script_path']}}
+
+  # Stage to publish the extension
+  - stage: Publish_Extension_Production
+    dependsOn: Package_Extension
+    condition: and(succeeded('Package_Extension'), eq(variables['build.sourceBranch'], 'refs/heads/release'))
+    jobs:
+    - job: publish_extension_production
+      displayName: Publish Exstension in the Visual Studio Marketplace 
+      condition: always()
+      steps:
+      - checkout: self
+      - task: DownloadBuildArtifacts@0
+        displayName: 'artifact: Download artifacts'
+        name: download_artifacts
+        inputs:
+          buildType: 'current'
+          downloadPath: '$(System.ArtifactsDirectory)'
+          downloadType: 'specific'
+          itemPattern: '**'
+          artifactName: $(ArtifactName)   
+
+      - task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Build-InlinePowershell.Xpirit-Vsts-Build-InlinePowershell.InlinePowershell@1
+        displayName: 'Determine ProductExtensionId and ExtensionName'
+        inputs:
+          Script: |
+            Write-Host "Getting the source branch"
+            $branchName = "$(Build.SourceBranchName)"
+            Write-Host "$branchName"
+            
+            If ($branchName -eq "release") {
+                Write-Host "##vso[task.setvariable variable=ProductsExtensionId;]$(ProductsExtensionIdRelease)"
+                Write-Host "##vso[task.setvariable variable=ExtensionName;]$(ExtensionNameRelease)"
+                Write-Host "##vso[task.setvariable variable=MarketplacePublisherId;]$(MarketplacePublisherIdRelease)"
+            } 
+            Else {
+              Write-Host "##vso[task.setvariable variable=ProductsExtensionId;]$(ProductsExtensionIdValidation)"
+              Write-Host "##vso[task.setvariable variable=ExtensionName;]$(ExtensionNameValidation)"
+              Write-Host "##vso[task.setvariable variable=MarketplacePublisherId;]$(MarketplacePublisherIdValidation)"
+            } 
+
+      - task: ms-devlabs.vsts-developer-tools-build-tasks.tfx-installer-build-task.TfxInstaller@2
+        displayName: 'Use Node CLI for Azure DevOps (tfx-cli): v0.7.x'
+        inputs:
+          version: v0.7.x
+
+      - task: ms-devlabs.vsts-developer-tools-build-tasks.publish-extension-build-task.PublishAzureDevOpsExtension@2
+        displayName: 'Publish and Share Extension'
+        inputs:
+          connectedServiceName: 'devops-extension-platformselfservice'
+          fileType: vsix
+          vsixFile: '$(System.ArtifactsDirectory)/PlatformExtension/*.vsix'
+          publisherId: $(MarketplacePublisherId)
+          extensionId: '$(ProductsExtensionId)'
+          extensionName: '$(ExtensionName)'
+          updateTasksVersion: false
+          extensionVisibility: privatepreview
+          shareWith: '$(ShareWithOrganization)'
+          bypassLocalValidation: true
+
+      - template:  ${{variables['template_path']}}
+        parameters:
+          TeamName: 'Platform Enablement Team 1'
+          ScriptPath: ${{variables['pwsh_script_path']}}
+
+  - stage: Publish_Extension_Validation
+    dependsOn: Package_Extension
+    condition: and(succeeded('Package_Extension'), ne(variables['build.sourceBranch'], 'refs/heads/release'))
+    jobs:
+    - job: publish_extension_validation
+      displayName: Publish Exstension in the Visual Studio Marketplace - validation
+      condition: always()   
+      steps:
+      - checkout: self
+      - task: DownloadBuildArtifacts@0
+        displayName: 'artifact: Download artifacts'
+        name: download_artifacts
+        inputs:
+          buildType: 'current'
+          downloadPath: '$(System.ArtifactsDirectory)'
+          downloadType: 'specific'
+          itemPattern: '**'
+          artifactName: $(ArtifactName)  
+          
+      - task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Build-InlinePowershell.Xpirit-Vsts-Build-InlinePowershell.InlinePowershell@1
+        displayName: 'Determine ProductExtensionId and ExtensionName'
+        inputs:
+          Script: |
+            Write-Host "Getting the source branch"
+            $branchName = "$(Build.SourceBranchName)"
+            Write-Host "$branchName"
+            
+            If ($branchName -eq "release") {
+                Write-Host "##vso[task.setvariable variable=ProductsExtensionId;]$(ProductsExtensionIdRelease)"
+                Write-Host "##vso[task.setvariable variable=ExtensionName;]$(ExtensionNameRelease)"
+                Write-Host "##vso[task.setvariable variable=MarketplacePublisherId;]$(MarketplacePublisherIdRelease)"
+            } 
+            Else {
+              Write-Host "##vso[task.setvariable variable=ProductsExtensionId;]$(ProductsExtensionIdValidation)"
+              Write-Host "##vso[task.setvariable variable=ExtensionName;]$(ExtensionNameValidation)"
+              Write-Host "##vso[task.setvariable variable=MarketplacePublisherId;]$(MarketplacePublisherIdValidation)"
+            } 
+
+      - task: ms-devlabs.vsts-developer-tools-build-tasks.tfx-installer-build-task.TfxInstaller@2
+        displayName: 'Use Node CLI for Azure DevOps (tfx-cli): v0.7.x'
+        inputs:
+          version: v0.7.x
+
+      - task: ms-devlabs.vsts-developer-tools-build-tasks.publish-extension-build-task.PublishAzureDevOpsExtension@2
+        displayName: 'Publish and Share Extension'
+        inputs:
+          connectedServiceName: 'devops-extension-platformselfservice'
+          fileType: vsix
+          vsixFile: '$(System.ArtifactsDirectory)/PlatformExtension/*.vsix'
+          publisherId: $(MarketplacePublisherId)
+          extensionId: $(ProductsExtensionId)
+          extensionName: $(ExtensionName)
+          updateTasksVersion: false
+          extensionVisibility: privatepreview
+          shareWith: $(ShareWithOrganizationValidation)
+          bypassLocalValidation: true
+
+      - template:  ${{variables['template_path']}}
+        parameters:
+          TeamName: 'Platform Enablement Team 1'
+          ScriptPath: ${{variables['pwsh_script_path']}}

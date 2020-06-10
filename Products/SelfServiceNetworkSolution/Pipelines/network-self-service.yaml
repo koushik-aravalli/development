@@ -1,0 +1,326 @@
+# Following are Jobs designed within this pipeline
+#
+# Global Variables Set during execution:
+#   az_func_req:            Set on the pipeline parameters
+#   serviceconnection_name: Set on the pipeline parameters
+#   publish_folder_name:    Set on the pipeline parameters
+#
+# Job 1: Build Dependencies
+#   - Get ResourceGroup Tags
+#   - Assign IP Space
+#   - Build parameters - Merge results form above 
+#
+# Job 2: Create README and Parse
+#   - Create ReadMe
+#   - Parse Readme to create network parameter files
+#   - Publish Artifacts - Readme, *.parameter files and dependent scripts
+#   
+# Job 3: Execute Tests on generated files
+#   - Invoke Pester tests
+#
+# Job 4: Create Network Stage 
+#   - Create Release Stage
+#
+
+# Build Name
+name: $(TeamProject)_$(BuildDefinitionName)_$(SourceBranch)_$(Date:yyyyMMdd)$(Rev:.r)
+
+# Variables - Global level
+variables:
+  #az_func_req set on the pipeline
+  ## Repos
+  repo_cbsp_alias: Azure
+  repo_platform_alias: PlatformNetworking
+
+  ## Repo Folder paths
+  repo_cbsp_path: $(System.DefaultWorkingDirectory)/$(repo_cbsp_alias)
+  repo_platform_path: $(System.DefaultWorkingDirectory)/$(repo_platform_alias)
+
+  ## artifacts path within self repo
+  customer_artifacts: $(repo_cbsp_path)/CBSP-Azure/CustomerSolutions/Foundation/Networking/Engineering
+  developer_scripts: $(repo_cbsp_path)/CBSP-Azure/Foundation/Networking/VirtualNetwork/v1.0/DeveloperScripts
+  vnet_2_folderpath: $(System.DefaultWorkingDirectory)/Products/SelfServiceNetworkSolution/v1/Scripts
+  readme_templates: $(System.DefaultWorkingDirectory)/Products/SelfServiceNetworkSolution/v1/README-Templates
+
+  ## artifacts path within multiple repos
+  vnet_2_folderpath_repo: $(repo_platform_path)/Products/SelfServiceNetworkSolution/v1/Scripts
+  readme_templates_repo: $(repo_platform_path)/Products/SelfServiceNetworkSolution/v1/README-Templates
+  ipam_automation_name: 'Assign-IPSpace.ps1'
+  test_scripts: $(repo_platform_path)/Products/SelfServiceNetworkSolution/v1/Tests
+
+  ## variabled for bug creation task
+  system_definitionname: $(System.DefinitionName)
+  OrganizationName: 'cbsp-abnamro'
+  ProjectName: 'Azure'
+  TeamName: 'Platform Enablement Team 1'
+  ItemTypeName: 'Backlog items'
+  ItemWorkType: 'Bug'
+  ### artifacts path within self repo
+  pwsh_script_path: $(System.DefaultWorkingDirectory)/Products/SelfServiceNetworkSolution/v1/Scripts
+  pwsh_script_path_alias: $(repo_platform_path)/Products/SelfServiceNetworkSolution/v1/Scripts
+  ### Path to the bug creation template
+  template_path: ../../../Pipelines/Templates/bug-creation-template.yaml
+
+resources:
+  repositories:
+  - repository: azure-repo
+    type: git
+    name: Azure/Azure
+    ref: Network/Self-Service
+
+trigger: none
+
+stages:
+  - stage: After_Checkin
+    displayName: After Checkin
+    pool:
+      vmImage: windows-latest
+    jobs:
+    - job: build_dependencies
+      displayName: Build additional params on incomming request 
+      condition: always()
+      steps:
+        - checkout: self
+          persistCredentials: true
+        - task: PowerShell@2
+          displayName: 'ps: Retrieve ServiceShortName release variable'
+          name: retrieve_serviceshortname_variable
+          enabled: true
+          inputs: 
+            targetType: 'inline'
+            pwsh: false
+            script: |
+              $data = $(az_func_req) | ConvertFrom-Json
+              $ServiceShortName = $data.Environment.ServiceShortName
+              Write-Host "ShortShortName:" $ServiceShortName
+              Write-Host "##vso[task.setvariable variable=service_short_name;isOutput=true]$ServiceShortName"
+        - task: AzurePowerShell@4
+          displayName: 'az ps: Get ResourceGroup Tags'
+          name: get_resourcegrouptags
+          enabled: true
+          inputs:
+            azureSubscription: $(serviceconnection_name)
+            pwsh: true
+            scriptType: 'filepath'
+            scriptPath: $(vnet_2_folderpath)/Get-ResourceGroupTags.ps1
+            scriptArguments: '-RawInputObject $(az_func_req)'
+            azurePowerShellVersion: 'latestVersion'
+            failOnStandardError: true  
+        - task: AzurePowerShell@4
+          displayName: 'az ps: Run IP Space assignment'
+          name: ipspace_assignment
+          enabled: true
+          inputs:
+            azureSubscription: $(serviceconnection_name)
+            pwsh: true
+            scriptType: 'filepath'
+            scriptPath: $(vnet_2_folderpath)/Assign-IPSPace.ps1
+            scriptArguments: "-PersonalAccessToken $(PAT) -RawInputObject $(az_func_req) -EnvironmentRGTags '$(get_resourcegrouptags.EnvironmentRGTags)'"
+            azurePowerShellVersion: 'latestVersion'
+        - task: PowerShell@2
+          displayName: 'ps: Build CreateReadMe Input'
+          name: build_createreadme_input
+          enabled: true
+          inputs:
+            pwsh: true
+            targetType: 'filepath'
+            filePath: $(vnet_2_folderpath)/BuildCreateReadMeInputObject.ps1
+            arguments: "-RawInputObject $(az_func_req) -VirtualNetworkInfo '$(ipspace_assignment.VirtualNetworkInfo)' -ResourceGroupTags '$(get_resourcegrouptags.EnvironmentRGTags)'"
+        #Calling bug-creation-template.yaml
+        - template:  ${{variables['template_path']}}
+          parameters:
+            TeamName: 'Platform Enablement Team 1'
+            ServiceShortName: $(retrieve_serviceshortname_variable.service_short_name)
+            ScriptPath: ${{variables['pwsh_script_path']}}
+
+    - job: create_parse_readme
+      displayName: Generate and Publish ReadMe and ARM parameters 
+      dependsOn: build_dependencies
+      condition: eq(dependencies.build_dependencies.result, 'Succeeded')
+      variables:
+        rawjson: $[ dependencies.build_dependencies.outputs['build_createreadme_input.UpdatedRawJson'] ]
+      steps:
+        - checkout: self
+          persistCredentials: true
+        - checkout: azure-repo
+          persistCredentials: true
+        - task: PowerShell@2
+          displayName: 'ps: Install PSDocs PowerShell Module from PowerShell Gallery'
+          name: install_psmodule
+          enabled: true
+          inputs: 
+            targetType: 'inline'
+            script: |
+              $null = Install-PackageProvider -Name NuGet -Force -Scope CurrentUser
+              Install-Module -Name PSDocs -Scope CurrentUser -Force
+        - task: PowerShell@2
+          displayName: 'ps: Run Create README'
+          name: create_readme
+          enabled: true
+          inputs:
+            pwsh: true
+            targetType: 'filepath'
+            filePath: $(vnet_2_folderpath_repo)/CreateREADME.ps1
+            arguments: "-OutputPath $(Build.ArtifactStagingDirectory)/ -TemplatePath $(readme_templates_repo) -InputObjectRaw '$(rawjson)'"
+        - task: PowerShell@2
+          displayName: 'ps: Update readme_location variable'
+          name: update_readme_variable
+          enabled: true
+          inputs: 
+            targetType: 'inline'
+            script: |
+              Write-Host "##vso[task.setvariable variable=readme_location]$(Build.ArtifactStagingDirectory)\README.md"
+        - task: PublishBuildArtifacts@1
+          displayName: 'Drop Readme'
+          enabled: true
+          inputs:
+            pathToPublish: $(readme_location)
+            artifactName: $(publish_folder_name)
+        - task: PowerShell@2
+          displayName: 'ps: Run Readme Parser'
+          name: readme_parser
+          enabled: true
+          inputs:
+            targetType: 'filepath'
+            filePath: $(developer_scripts)/Parse-ReadmeMd.ps1
+            arguments: '-ReadmeFilePath $(readme_location) -Overwrite a -TargetLocation $(Build.ArtifactStagingDirectory)/'
+        - task: PublishBuildArtifacts@1
+          displayName: 'Drop Create Network Script'
+          enabled: true
+          inputs:
+            pathToPublish: $(developer_scripts)/Create-VirtualNetworkStage.ps1
+            artifactName: $(publish_folder_name)
+            parallel: true
+        - task: PublishBuildArtifacts@1
+          displayName: 'Drop Trigger Release Pipeline'
+          enabled: true
+          inputs:
+            pathToPublish: $(vnet_2_folderpath_repo)/Trigger-ReleasePipeline.ps1
+            artifactName: $(publish_folder_name)
+            parallel: true
+        - task: PublishBuildArtifacts@1
+          displayName: 'Drop parameters'
+          enabled: true
+          inputs:
+            pathToPublish: $(Build.ArtifactStagingDirectory)
+            artifactName: $(publish_folder_name)
+            parallel: true
+        - task: PublishBuildArtifacts@1
+          displayName: 'Drop Test Scripts'
+          enabled: true
+          inputs:
+            pathToPublish: $(test_scripts)
+            artifactName: $(publish_folder_name)
+            parallel: true
+        #Calling bug-creation-template.yaml
+        - template:  ${{variables['template_path']}}
+          parameters:
+            TeamName: 'Platform Enablement Team 1'
+            ServiceShortName: $(serviceshortname)
+            ScriptPath: ${{variables['pwsh_script_path_alias']}}
+
+    - job: execute_test_publish
+      displayName: Execute Test and Publish results
+      dependsOn: create_parse_readme
+      #condition: eq(dependencies.create_parse_readme.result, 'Succeeded')
+      condition: eq(0,1)
+      steps:
+        - checkout: self   
+          persistCredentials: true
+        - task: DownloadBuildArtifacts@0
+          displayName: 'artifact: Download artifacts'
+          name: download_artifacts
+          enabled: true
+          inputs:
+            buildType: 'current'
+            downloadPath: '$(System.ArtifactsDirectory)'
+            downloadType: 'specific'
+            itemPattern: '**'
+            artifactName: $(publish_folder_name)
+        - task: PowerShell@2
+          displayName: 'ps: Install Pester PowerShell Module from PowerShell Gallery'
+          name: install_psmodule_pester
+          enabled: true
+          inputs: 
+            targetType: 'inline'
+            script: |
+              $null = Install-PackageProvider -Name NuGet -Force -Scope CurrentUser
+              Install-Module -Name Pester -Scope CurrentUser -Force -SkipPublisherCheck
+        - task: PowerShell@2
+          displayName: 'ps: Execute Tests Parser'
+          name: test_parser
+          enabled: true
+          inputs:
+            targetType: 'inline'
+            script: |
+              Invoke-Pester -Script @{Path="$(System.ArtifactsDirectory)\$(publish_folder_name)\Network-Tests.ps1"; Parameters=@{ ParameterPath="$(System.ArtifactsDirectory)\$(publish_folder_name)"; Files = @() }} -OutputFormat NUnitXml -OutputFile $(System.ArtifactsDirectory)/Test-Parser-Readme.xml
+        - task: PublishTestResults@2
+          displayName: 'Publish: Tests'
+          enabled: true
+          inputs:
+            testResultsFormat: NUnit
+            testResultsFiles: $(System.ArtifactsDirectory)/Test-*.xml
+            searchFolder: $(System.ArtifactsDirectory)
+            mergeTestResults: true
+            testRunTitle: 'ReadMe Parser Tests'
+         #Calling bug-creation-template.yaml
+        - template:  ${{variables['template_path']}}
+          parameters:
+            TeamName: 'Platform Enablement Team 1'
+            ServiceShortName: $(serviceshortname)
+            ScriptPath: ${{variables['pwsh_script_path']}}
+
+    - job: create_network_stage
+      displayName: Create Network Stage
+      dependsOn: 
+        - create_parse_readme
+        - build_dependencies
+      condition: eq(dependencies.create_parse_readme.result, 'Succeeded')
+      variables:
+        subscriptionName: $[ dependencies.create_parse_readme.outputs['readme_parser.subscriptionName'] ]
+        vnetName: $[ dependencies.create_parse_readme.outputs['readme_parser.vnetName'] ]
+        rawjson: $[ dependencies.build_dependencies.outputs['build_createreadme_input.UpdatedRawJson'] ]
+      steps:
+        - checkout: self
+          persistCredentials: true
+
+        - task: DownloadBuildArtifacts@0
+          displayName: 'artifact: Download artifacts'
+          name: download_artifacts
+          enabled: true
+          inputs:
+            buildType: 'current'
+            downloadPath: '$(System.ArtifactsDirectory)'
+            downloadType: 'specific'
+            itemPattern: '**'
+            artifactName: '$(publish_folder_name)'
+        - task: PowerShell@2
+          displayName: 'ps: Add Tag to Build Artifact'
+          name: add_tag_buildartifact
+          enabled: true
+          inputs: 
+            targetType: 'inline'
+            script: |
+              Write-Host "##vso[build.addbuildtag]$(publish_folder_name)" 
+        - task: PowerShell@2
+          displayName: 'ps: Create Network Release Stage'
+          name: create_network_stage
+          enabled: true
+          inputs:
+            targetType: 'filepath'
+            filePath: $(System.ArtifactsDirectory)\$(publish_folder_name)\Create-VirtualNetworkStage.ps1
+            arguments: -SubscriptionName $(subscriptionName) -VirtualNetworkName $(vnetName) -PersonalAccessToken $(PAT) -ArtifactsDirectoryPath '$(System.ArtifactsDirectory)\$(publish_folder_name)' -BuildAgent -ValidateOnly:$(dryRun) -SelfService -InputObject '$(rawjson)'
+        - task: PowerShell@2
+          displayName: 'ps: Trigger Network Release Pipeline'
+          name: trigger_network_release
+          enabled: false
+          inputs:
+            targetType: 'filepath'
+            filePath: $(System.ArtifactsDirectory)\$(publish_folder_name)\Trigger-ReleasePipeline.ps1
+            arguments: -ReleaseDefinitionName $(create_network_stage.ReleaseDefinitionName) -StageToStart '$(create_network_stage.StageToStart)' -PersonalAccessToken $(PAT)
+        #Calling bug-creation-template.yaml
+        - template:  ${{variables['template_path']}}
+          parameters:
+            TeamName: 'Platform Enablement Team 1'
+            ServiceShortName: $(serviceshortname)
+            ScriptPath: ${{variables['pwsh_script_path']}}

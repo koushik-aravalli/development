@@ -1,0 +1,125 @@
+# Following are Jobs designed within this pipeline
+#
+# Global Variables Set during execution:
+#   az_func_req:            Set on the pipeline parameters
+#   serviceconnection_name: Set on the pipeline parameters
+#
+# Job 1: Save files to GIT
+#   - Push all published artifacts files with extension json and md into new branch
+
+# Build Name
+name: $(TeamProject)_$(BuildDefinitionName)_$(SourceBranch)_$(Date:yyyyMMdd)$(Rev:.r)
+
+# Variables - Global level
+variables:
+  serviceconnection_name: 'devops-azure-engineering'
+  artifact_name: NetworkSelfService-Artifacts
+  az_function_url: https://networkapi01-p.azurewebsites.net
+  org_name: 'cbsp-abnamro'
+  prj_name: 'Azure'
+  team_name: 'Platform Enablement Team 1'
+  repo_name: PlatformNetworking
+
+  ## variabled for bug creation task
+  system_definitionname: $(System.DefinitionName)
+  OrganizationName: 'cbsp-abnamro'
+  ProjectName: 'Azure'
+  TeamName: 'Platform Enablement Team 1'
+  ItemTypeName: 'Backlog items'
+  ItemWorkType: 'Bug'
+  ### artifacts path within self repo
+  pwsh_script_path: $(System.DefaultWorkingDirectory)/Products/SelfServiceNetworkSolution/v1/Scripts
+  ### Path to the bug creation template
+  template_path: ../../../Pipelines/Templates/bug-creation-template.yaml
+
+resources:
+  pipelines:
+    - pipeline: network-self-service
+      source: PlatformNetworking-Network-Self-Service
+      trigger: 
+        branches:
+          - Feature/Intermediate
+          - master
+
+trigger: 
+  - none
+
+stages:
+  - stage: save_network_artifacts_to_git
+    displayName: Save Network Self-Service artifacts to git
+    pool:
+      vmImage: windows-latest
+    jobs:
+    - job: save_artifacts_git
+      displayName: Save published artifacts in git repo
+      steps:
+        - checkout: self
+          fetchDepth: 3
+          persistCredentials: true
+
+        - task: DownloadPipelineArtifact@2
+          displayName: 'artifact: Download artifacts'
+          name: download_artifacts
+          enabled: true
+          inputs:
+            source: 'specific'
+            project: Azure
+            pipeline: PlatformNetworking-Network-Self-Service
+            preferTriggerPipeline: true
+            runVersion: latest
+
+        - task: AzureCLI@2
+          displayName: 'az cli: Readme to Git Repo'
+          name: save_files_to_git
+          enabled: true
+          inputs:
+            azureSubscription: $(serviceconnection_name)
+            scriptType: pscore
+            scriptPath: $(System.DefaultWorkingDirectory)/Products/SelfServiceNetworkSolution/v1/Scripts/Save-FilesToGit.ps1
+            scriptArguments: "-FolderPath $(Pipeline.Workspace) -AzFunctionUrl $(az_function_url)"
+            addSpnToEnvironment: true
+
+        - task: PowerShell@2
+          displayName: 'ps: Get OPS PBI in current sprint'
+          enabled: true
+          continueOnError: true
+          condition: succeededOrFailed()
+          inputs:
+            targetType: 'filepath'
+            filePath: $(System.DefaultWorkingDirectory)/Products/SelfServiceNetworkSolution/v1/Scripts/Get-AzureDevOpsPBI.ps1
+            arguments: |
+              -OrganizationName $(org_name) `
+              -ProjectName $(prj_name) `
+              -TeamName '$(team_name)' `
+              -StartingPBITitle 'OPS:' `
+              -OutputVariableName 'OpsPbiId'
+          env: 
+            SYSTEM_ACCESSTOKEN: $(system.accesstoken)
+
+        - task: PowerShell@2
+          displayName: 'ps: Add OPS task to review/complete PR'
+          continueOnError: true
+          condition: succeededOrFailed()
+          enabled: true
+          inputs:
+            targetType: 'filepath'
+            filePath: $(System.DefaultWorkingDirectory)/Products/SelfServiceNetworkSolution/v1/Scripts/Add-AzureDevopsBoardItem.ps1
+            arguments: |
+              -OrganizationName $(org_name) `
+              -ProjectName $(prj_name) `
+              -TeamName '$(team_name)' `
+              -ItemTypeName 'Backlog items' `
+              -ItemWorkType 'Task' `
+              -ItemIteration 'Current' `
+              -ItemTitle 'PullRequest: Network-Selfservice: $(save_files_to_git.branch_Name)' `
+              -ItemParentId $(OpsPbiId) `
+              -ItemTags 'PullRequest' `
+              -UsersToNotifyPartOfTeam: $false `
+              -ItemDescription "Please Review the new PULL Request set on Branch: https://dev.azure.com/$(org_name)/$(prj_name)/_git/$(repo_name)?version=GB$(save_files_to_git.branch_name)"
+          env: 
+            SYSTEM_ACCESSTOKEN: $(system.accesstoken)
+
+      - template:  ${{variables['template_path']}}
+        parameters:
+          TeamName: 'Platform Enablement Team 1'
+          ScriptPath: ${{variables['pwsh_script_path']}}

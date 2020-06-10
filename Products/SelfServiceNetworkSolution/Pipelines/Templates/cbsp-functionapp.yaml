@@ -1,0 +1,106 @@
+parameters:
+- name: ServiceConnectionName
+  type: string
+- name: FunctionAppName
+  type: string
+- name: StorageAccountName
+  type: string
+- name: KeyVaultName
+  type: string
+- name: AuthSPPasswordSecretName
+  type: string
+- name: AuthSPObjectIdSecretName
+  type: string
+- name: AuthSPApplicationIdSecretName
+  type: string
+- name: ApplicationInsightsName
+  type: string
+- name: Undeploy
+  type: boolean
+  default: false
+
+jobs:
+  - job: create_functionapp
+    displayName: Create CBSP Azure FunctionApp
+    dependsOn: create_register_aad_app
+    steps:
+    - task: AzurePowerShell@4
+      displayName: 'az ps: Get sas token for FunctionApp Storage'
+      inputs:
+        azureSubscription: ${{ parameters.ServiceConnectionName }}
+        ScriptType: InlineScript
+        Inline: |
+          $keys = Get-AzStorageAccountKey -ResourceGroupName $(resourcegroup_name) -Name ${{ parameters.StorageAccountName }}
+          Write-Output "##vso[task.setvariable variable=storageAccountKey;issecret=true]$($keys[0].Value)"
+        azurePowerShellVersion: LatestVersion
+
+    - task: AzureKeyVault@1
+      displayName: 'Get Secrets from Azure Key Vault: ${{ parameters.KeyVaultName }}'
+      inputs:
+        azureSubscription: ${{ parameters.ServiceConnectionName }}
+        KeyVaultName: ${{ parameters.KeyVaultName }}
+        SecretsFilter: ${{ parameters.AuthSPApplicationIdSecretName }},${{ parameters.AuthSPPasswordSecretName }}
+
+    - task: abnamrocbspazure.AbnAmro-CbspAzure-Products.AbnAmro-CbspAzure-Keyvault.AbnAmro-CbspAzure-KeyVault@1
+      displayName: 'Get: Authorization ServicePrincipal ApplicationId'
+      name: authSPApplicationId
+      inputs:
+        azureSubscription: ${{ parameters.ServiceConnectionName }}
+        resourceGroupName: $(resourcegroup_name)
+        keyVaultName: ${{ parameters.KeyVaultName }}
+        action: getSecret
+        secretName: '${{ parameters.AuthSPApplicationIdSecretName }}'
+
+    - task: abnamrocbspazure.AbnAmro-CbspAzure-Products.AbnAmro-CbspAzure-Keyvault.AbnAmro-CbspAzure-KeyVault@1
+      displayName: 'Get: Authorization ServicePrincipal Password'
+      name: authSPPassword
+      inputs:
+        azureSubscription: ${{ parameters.ServiceConnectionName }}
+        resourceGroupName: $(resourcegroup_name)
+        keyVaultName: ${{ parameters.KeyVaultName }}
+        action: getSecret
+        secretName: '${{ parameters.AuthSPPasswordSecretName }}'
+
+    - task: abnamrocbspazure.AbnAmro-CbspAzure-Products.AbnAmro-CbspAzure-AppServicePublic.AbnAmro-CbspAzure-AppServicePublic@1
+      displayName: 'New: Network SelfService FunctionApp'
+      name: network_funcapp
+      inputs:
+        azureSubscription: ${{ parameters.ServiceConnectionName }}
+        resourceGroupName: $(resourcegroup_name)
+        appServiceName: ${{ parameters.FunctionAppName }}
+        windowsFxVersion: NETCORE
+        appServiceKind: functionapp
+        applicationInsightsName: ${{ parameters.ApplicationInsightsName }}
+        loggingStorageAccount: ${{ parameters.StorageAccountName }}
+        authenticationConfiguration: turnkeyAuthenticationEnabled
+        authenticationClientId: $(authSPApplicationId.SecretValue)
+        authenticationClientSecret: $(authSPPassword.SecretValue)
+        appServicePlanSkuName: S1
+        restrictToCustomerIPRanges: false
+        specifyAppSettings: true
+        appSettings: |
+          FUNCTIONS_EXTENSION_VERSION:~3
+          FUNCTIONS_WORKER_RUNTIME:dotnet
+          WEBSITE_RUN_FROM_PACKAGE:1
+          AzureWebJobsStorage:DefaultEndpointsProtocol=https;AccountName=${{ parameters.StorageAccountName }};AccountKey=$(storageAccountKey)
+
+    - task: AzurePowerShell@4
+      displayName: 'az ps: Add Functionapp MSI to keyvault'
+      inputs:
+        azureSubscription: ${{ parameters.ServiceConnectionName }}
+        ScriptType: InlineScript
+        Inline: 'Set-AzKeyVaultAccessPolicy -VaultName ${{ parameters.KeyVaultName }} -ResourceGroupName $(resourcegroup_name) -ObjectId $(network_funcapp.ManagedServiceIdentity) -PermissionsToSecrets Get,Set,List,Delete'
+        azurePowerShellVersion: LatestVersion
+
+  - job: remove_functionapp
+    displayName: Remove CBSP Azure FunctionApp
+    condition: eq(${{ parameters.Undeploy }}, 'true' )
+    steps:
+    - task: abnamrocbspazure.AbnAmro-CbspAzure-Products.AbnAmro-CbspAzure-AppServicePublic.AbnAmro-CbspAzure-AppServicePublic@1
+      displayName: Remove FunctionApp
+      inputs:
+        azureSubscription: ${{ parameters.ServiceConnectionName }}
+        resourceGroupName: $(resourcegroup_name)
+        appServiceName: ${{ parameters.FunctionAppName }}
+        action: removeAppService
+        removeConfirmation: true
