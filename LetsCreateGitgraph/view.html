@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="./node_modules/@gitgraph/js/lib/gitgraph.umd.js"></script>
+</head>
+
+<body>
+    <!-- DOM element in which we'll mount our graph -->
+    <div id="my-git-graph"></div>
+
+    <!-- Use the `GitgraphJS` global variable to create your graph -->
+    <script>
+        // Get the graph container HTML element.
+        const graphContainer = document.getElementById("my-git-graph");
+
+        const gitgraphOptions = {
+            author: "Koushik Aravalli <koushik.aravalli@gmail.com>",
+            orientation: "horizontal"
+            //mode: "compact"
+        }
+        // Instantiate the graph.
+        const gitgraph = GitgraphJS.createGitgraph(graphContainer, gitgraphOptions);
+
+        const master = gitgraph.branch("master");
+        master.commit("Initial commit").tag("v4.8.9");;
+
+        const develop = master.branch("Koushik/develop");
+        develop.commit("Add project dependencies");
+
+        const newFeatureA = develop.branch("Koushik/new-feature");
+        newFeatureA
+            .commit("Create webpage")
+            .commit("Add controller")
+        develop.merge(newFeatureA);
+
+        const bugfixOne = master.branch("Koushik/bugfix-existing-feature");
+        bugfixOne.commit("Handle regular expression match");
+        master.merge(bugfixOne);
+
+        const newFeatureBackend = develop.branch("Koushik/new-feature-backend");
+        newFeatureBackend.commit("Genrate Connection pool")
+            .commit("Include datasource dependencies")
+
+        develop.merge(newFeatureBackend);
+
+        develop.commit("Document new feature release notes");
+
+        master.merge(develop).tag("v5.0.0");
+
+    </script>
+</body>
+
+</html>
