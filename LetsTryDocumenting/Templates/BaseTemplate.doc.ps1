@@ -7,11 +7,11 @@ Document 'README' {
     Section "Version Context" {
         Section "Environment Details" {
             "- Subscription:"
-                ('  - [X] {0}' -f $($InputObject.Environment.SubscriptionName))
-            "- Virtual Network Name: $($InputObject.VirtualNetworkName)"
-            "- Location: $($InputObject.Environment.Location)"
-            "- Allowed Locations: $($InputObject.Environment.AllowedLocation)"
-            "- Tags: $($InputObject.Environment.Tags)"
+                ('  - [X] ``{0}``' -f $($InputObject.Environment.SubscriptionName))
+            "- Virtual Network Name: ``$($InputObject.VirtualNetworkName)``"
+            "- Location: ``$($InputObject.Environment.Location)``"
+            "- Allowed Locations: ``$($InputObject.Environment.AllowedLocation)``"
+            "- Tags: ``$($InputObject.Environment.Tags)``"
         }
     }
 
@@ -20,10 +20,15 @@ Document 'README' {
         ('- [{0}] Azure DNS' -f ($($InputObject.DNS) -eq 'AzureDNS'))
 
         Section "Peering" {
-            '- Default HUB-Spoke deployment model'
-            ('- [{0}] Hub/Spoke'-f ($($InputObject.Peering) -eq 'Hub/Spoke'))
-            ('- [{0}] Spoke/Spoke'-f ($($InputObject.Peering) -eq 'Spoke/Spoke'))
-            '   - [ ] Peering to `<Peer VNet name>` in `Peer VNet Resource Group`, `Peer VNet Subscription Id`'
+            If ($InputObject.Subnet.SubnetName -contains 'GatewaySubnet') {
+                '- VNET Type : ``{0}``' -f 'HUB'
+            }
+            Else{
+                '- VNET Type : ``{0}``' -f 'Spoke'
+            }
+            Foreach ($peering in $InputObject.Peering) {
+                '   - [X] Peering to VNET ``{0}`` in ResourceGroup ``{1}``' -f $peering.split('/')[-1],$peering.split('/')[4]
+            }
         }
 
         Section 'Subnet' {
@@ -33,5 +38,10 @@ Document 'README' {
         $InputObject.RouteTableSection
 
         $InputObject.NsgSection
+
+        Section 'Private DNS Zone Links' {
+            $InputObject.PrivateDNS | Table -Property @{Name='Private DNS'; Expression={$_.Split('/')[-1]}},@{Name='Resource Group'; Expression={$_.Split('/')[4]}}
+        }
+        
     }
 }

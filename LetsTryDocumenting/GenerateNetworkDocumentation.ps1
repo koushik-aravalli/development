@@ -38,6 +38,7 @@ Foreach ($subnet in $VirtualNetwork.Subnets) {
     }
 
     If (!$subnet.NetworksecurityGroup) {
+        $Subnets.Add($subnetObj) | out-null
         Continue
     }
     $nsg = Get-AzNetworkSecurityGroup -Name ($subnet.NetworksecurityGroup.Id.Split('/')[-1])
@@ -77,6 +78,17 @@ $dns = @{
 }
 #endregion
 
+#region Get PrivateDNS If any
+$privateDns = Get-AzPrivateDnsZone
+$vnetLinkedPrivateDns = [System.Collections.ArrayList]@()
+foreach ($pdns in $privateDns) {
+    $dnsVnetlink = Get-AzPrivateDnsVirtualNetworkLink -ResourceGroupName $pdns.ResourceGroupName -ZoneName $pdns.Name
+    If($dnsVnetlink.VirtualNetworkId -eq $VirtualNetwork.Id){
+        $vnetLinkedPrivateDns.Add($pdns.ResourceId)
+    }
+}
+#endregion
+
 #region Build VirtualNetwork
 $inputObject = [PSCustomObject]@{
     Environment        = [PSCustomObject]@{
@@ -89,10 +101,8 @@ $inputObject = [PSCustomObject]@{
     GatewayType        = $null
     VirtualNetworkName = $VirtualNetwork.Name
     DNS                = $dns
-    VirtualNetworkInfo = [PSCustomObject]@{
-        VirtualNetworkName = $VirtualNetwork.Name
-        VnetResourceGroup  = $VirtualNetwork.ResourceGroupName
-    }
+    Peering = @($VirtualNetwork.VirtualNetworkPeerings.RemoteVirtualNetwork.Id)
+    PrivateDns = $vnetLinkedPrivateDns
 }
 #endregion
 
@@ -115,6 +125,8 @@ $readmeObject = [pscustomobject]@{
     'Subnet'             = $inputObject.Subnet
     'RouteTableSection'  = ''
     'NsgSection'         = ''
+    'Peering'            = $inputObject.Peering
+    'PrivateDns'         = $inputObject.PrivateDns
 }
 #endregion
 
