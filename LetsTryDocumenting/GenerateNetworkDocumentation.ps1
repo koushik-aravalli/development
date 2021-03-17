@@ -72,7 +72,8 @@ Foreach ($subnet in $VirtualNetwork.Subnets) {
 
     $Subnets.Add($subnetObj) | out-null
 }
-$dnsOption = 'AzureADDSDNS'
+
+$dnsOption = 'Azure DNS'
 $dns = @{
     "Name" = $dnsOption
 }

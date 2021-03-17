@@ -1,16 +1,15 @@
 #region Create README
 Document 'README' {
 
-    Title "Virtual Network $($InputObject.VirtualNetworkName)"
+    Title "Network Solution for $($InputObject.VirtualNetworkName)"
+
     '[[_TOC_]]'
 
-    Section "Version Context" {
-        Section "Environment Details" {
-            "- Subscription:"
-                ('  - [X] ``{0}``' -f $($InputObject.Environment.SubscriptionName))
-            "- Virtual Network Name: ``$($InputObject.VirtualNetworkName)``"
-            "- Location: ``$($InputObject.Environment.Location)``"
-        }
+    Section "General information" {
+        "- Subscription:"
+            ('  - [X] ``{0}``' -f $($InputObject.Environment.SubscriptionName))
+        "- Virtual Network Name: ``$($InputObject.VirtualNetworkName)``"
+        "- Location: ``$($InputObject.Environment.Location)``"
         Section "Tags" {
             $InputObject.Environment.Tags | Table -Property @{Name='Name'; Expression={$_.Keys}},@{Name='Value'; Expression={$_.Values}}
         }
@@ -18,7 +17,12 @@ Document 'README' {
 
     Section "Virtual Network" {
         ('- Address Space: {0}' -f $([string]::Join(',', $($InputObject.Subnet.AddressSpace|ForEach-Object {"``$_``"}))))
-        ('- [{0}] Azure DNS' -f ($($InputObject.DNS) -eq 'AzureDNS'))
+
+        ('- [{0}] Azure DNS' -f ($($InputObject.DNS) -eq 'Azure DNS'))
+
+        Section 'Private DNS Zone Links' {
+            $InputObject.PrivateDNS | Table -Property @{Name='Private DNS'; Expression={$_.Split('/')[-1]}},@{Name='Resource Group'; Expression={$_.Split('/')[4]}}
+        }
 
         Section "Peering" {
             If ($InputObject.Subnet.SubnetName -contains 'GatewaySubnet') {
@@ -39,10 +43,6 @@ Document 'README' {
         $InputObject.RouteTableSection
 
         $InputObject.NsgSection
-
-        Section 'Private DNS Zone Links' {
-            $InputObject.PrivateDNS | Table -Property @{Name='Private DNS'; Expression={$_.Split('/')[-1]}},@{Name='Resource Group'; Expression={$_.Split('/')[4]}}
-        }
         
     }
 }
