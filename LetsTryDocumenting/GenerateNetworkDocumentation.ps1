@@ -89,44 +89,25 @@ foreach ($pdns in $privateDns) {
 }
 #endregion
 
-#region Build VirtualNetwork
-$inputObject = [PSCustomObject]@{
-    Environment        = [PSCustomObject]@{
+# Configure MarkDown options
+$options = New-PSDocumentOption -Option @{ 'Markdown.UseEdgePipes' = 'Always'; 'Markdown.ColumnPadding' = 'None' };
+
+#region Build Readme Object
+$readmeObject = [pscustomobject]@{
+    'Environment'        = [PSCustomObject]@{
         SubscriptionName  = $subscription.Name
         ResourceGroupName = $resourceGroup.Name
         Location          = $VirtualNetwork.Location
         Tags              = $resourceGroup.Tags
     }
-    Subnet             = $Subnets
-    GatewayType        = $null
-    VirtualNetworkName = $VirtualNetwork.Name
-    DNS                = $dns
-    Peering = @($VirtualNetwork.VirtualNetworkPeerings.RemoteVirtualNetwork.Id)
-    PrivateDns = $vnetLinkedPrivateDns
-}
-#endregion
-
-# Configure MarkDown options
-$options = New-PSDocumentOption -Option @{ 'Markdown.UseEdgePipes' = 'Always'; 'Markdown.ColumnPadding' = 'None' };
-
-#region Build Readme Object
-$Environment = [PSCustomObject]@{
-    SubscriptionName= $inputObject.Environment.SubscriptionName
-    Location        = $inputObject.Environment.Location
-    AllowedLocation = 'westeurope, northeurope'
-    Tags            = $inputObject.Environment.BusinessApplicationCI
-}
-
-$readmeObject = [pscustomobject]@{
-    'Environment'        = $Environment
-    'ResourceGroup'      = $inputObject.ResourceGroup
+    'ResourceGroup'      = $resourceGroup.Name
     'VirtualNetworkName' = $VirtualNetworkName
-    'DNS'                = $($inputObject.DNS.Name)
-    'Subnet'             = $inputObject.Subnet
+    'DNS'                = $dns.Name
+    'Subnet'             = $Subnets
     'RouteTableSection'  = ''
     'NsgSection'         = ''
-    'Peering'            = $inputObject.Peering
-    'PrivateDns'         = $inputObject.PrivateDns
+    'Peering'            = @($VirtualNetwork.VirtualNetworkPeerings.RemoteVirtualNetwork.Id)
+    'PrivateDns'         = $vnetLinkedPrivateDns
 }
 #endregion
 

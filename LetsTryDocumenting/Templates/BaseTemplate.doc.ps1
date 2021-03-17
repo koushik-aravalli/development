@@ -10,8 +10,9 @@ Document 'README' {
                 ('  - [X] ``{0}``' -f $($InputObject.Environment.SubscriptionName))
             "- Virtual Network Name: ``$($InputObject.VirtualNetworkName)``"
             "- Location: ``$($InputObject.Environment.Location)``"
-            "- Allowed Locations: ``$($InputObject.Environment.AllowedLocation)``"
-            "- Tags: ``$($InputObject.Environment.Tags)``"
+        }
+        Section "Tags" {
+            $InputObject.Environment.Tags | Table -Property @{Name='Name'; Expression={$_.Keys}},@{Name='Value'; Expression={$_.Values}}
         }
     }
 
