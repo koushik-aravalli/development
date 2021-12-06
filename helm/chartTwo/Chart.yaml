@@ -24,11 +24,10 @@ version: 0.1.0
 appVersion: "1.16.0"
 
 dependencies:
-  - name: chartOne
-    alias: first-instance ## release-name on the dependent chart
-    charts: chartOne
-    # repository: "file://../chartOne" ## doesnt work!
-    version: "0.1.0"
+  - name: chartOne ## should match `name` in charts/subfolder `Chart.yaml`
+    charts: chartOne ## should match name of the subfolder in `charts`
+    # repository: "file://../chartOne" ## does not work!
+    version: "0.1.0" ## should match `version` in charts/subfolder `Chart.yaml`
 
   - name: chartOne
     alias: second-instance ## release-name on the dependent chart
