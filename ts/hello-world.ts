@@ -30,8 +30,3 @@ for (var i = 0; i < 3; i++) {
 // return fibanocci series of size
 var r = new myMath(15, 100, 50).getFibanocciSeries()
 console.log(r);
-
-function timeout(arg0: number) {
-    return new Promise(i => setTimeout(i, arg0))
-}
-
