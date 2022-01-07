@@ -1,12 +1,12 @@
 import { myMath } from "./myMath";
 
 //async function getSum(params: Number[]) {
-const getSum = async(params: Number[]) => {
+const getSum = async (params: Number[]) => {
     var total: number = 0;
     params.forEach(element => {
         total += element.valueOf()
     });
-    return new Promise(resolve => resolve({ message: "elements: "+params + ", total: " + total }))
+    return new Promise(resolve => resolve({ message: "elements: " + params + ", total: " + total }))
     // console.log("elements: " + params)
     // console.log("total: " + total)
 }
@@ -20,7 +20,7 @@ for (var i = 0; i < 3; i++) {
 // call async function and console log 
 (async () => {
     console.log(await getSum(intlist));
-  }
+}
 )();
 
 // create list with random numbers between a ceiling and floor

@@ -2,10 +2,10 @@ export class myMath {
     private _size: number = 0
     private _max: number = 0
     private _min: number = 0
-    
+
     constructor(size: number, min: number, max: number) {
         this._size = size
-        this._max = max 
+        this._max = max
         this._min = min
     }
 
@@ -15,7 +15,7 @@ export class myMath {
 
     generateRandomNumberSeries(): Array<number> {
         var randomList = new Array();
-        var listSize:number = 0;
+        var listSize: number = 0;
 
         while (listSize < this._size) {
             randomList.push(this.generateRandomNumber())
@@ -25,18 +25,18 @@ export class myMath {
     }
 
     // 0,1,1,2,3,5,8...
-    getFibanocciSeries() : Array<number>{
+    getFibanocciSeries(): Array<number> {
         var fib = new Array();
         var idx = 0;
-        while(idx < this._size){
+        while (idx < this._size) {
             fib.push(this.getFibnumber(idx))
             idx++
         }
         return fib;
     }
 
-    getFibnumber(atPosition:number): number{
-        return atPosition < 2 ? 1: this.getFibnumber(atPosition - 1 ) + this.getFibnumber(atPosition - 2)
+    getFibnumber(atPosition: number): number {
+        return atPosition < 2 ? 1 : this.getFibnumber(atPosition - 1) + this.getFibnumber(atPosition - 2)
     }
 
 }
